@@ -42,6 +42,7 @@ void decode(FILE* inFile, FILE* outFile)
         memset(convByte, EMPTY, NUM_CONV_BYTES);
 
         fread(convByte, NUM_CONV_BYTES, 1, inFile);
+        __checkB64File(convByte);
         numOrigByte = convFrom(convByte, origByte);
 
         fwrite(origByte, numOrigByte, 1, outFile);

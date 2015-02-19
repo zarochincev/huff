@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
         __exit(FEW_PAR, NULL);
     }
 
-    if(argc > 4)
+    if(argc > 4) /*4 parameters (*.exe, mode, input, output)*/
     {
         __exit(MANY_PAR, NULL);
     }
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     if(!inFile)
     {
-        __exit(F_NOT_FOUND, argv[2]);
+        __exit(FILE_NOT_FOUND, argv[2]);
     }
 
     outFile = fopen(argv[3], "wb");
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 
     if(!strcmp(argv[1], DECODE))
     {
-        checkB64File(inFile) ? decode(inFile, outFile) : __exit(INV_FILE, argv[1]);
+        checkB64File(inFile) ? decode(inFile, outFile) : __exit(INV_FILE, argv[2]);
     }
 
     fclose(inFile);

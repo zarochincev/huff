@@ -18,7 +18,7 @@
 #define FEW_PAR 1
 #define MANY_PAR 2
 #define UNKNOWN_PAR 3
-#define F_NOT_FOUND 4
+#define FILE_NOT_FOUND 4
 #define INV_FILE 5
 #define FALSE 0
 #define TRUE 1
@@ -33,8 +33,8 @@ int convFrom(uchar*, uchar*);
 int findInd(uchar);
 int checkB64File(FILE*);
 void convProgress(long, long);
-void checkProgress(long, long);
 long sizeOfFile(FILE*);
 void __exit(int, char*);
+void __checkB64File(uchar*);
 
 #endif /* HEAD_H_INCLUDED */

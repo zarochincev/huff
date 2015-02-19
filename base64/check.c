@@ -2,37 +2,12 @@
 
 int checkB64File(FILE* file)
 {
-    int i = 0;
-    uchar ch = 0;
     long fSize = sizeOfFile(file);
 
-    if((fSize % 4) != 0)
+    if((fSize % NUM_CONV_BYTES) != 0)
     {
         return FALSE;
     }
-
-    while(!feof(file))
-    {
-        checkProgress(ftell(file), fSize);
-        fread(&ch, sizeof(uchar), 1, file);
-
-        i = 0;
-
-        while(i < LEN_B64_CODE)
-        {
-            if(ch == CODE[i])
-            {
-                break;
-            }
-            i++;
-        }
-
-        if(i == LEN_B64_CODE)
-        {
-            return FALSE;
-        }
-    }
-    rewind(file);
 
     return TRUE;
 }
@@ -48,22 +23,6 @@ void convProgress(long cur, long size)
     {
         perDiff = diff;
         printf("Progress: %d\%\r", perDiff);
-    }
-
-    return;
-}
-
-void checkProgress(long cur, long size)
-{
-    double diff = 0;
-    static int perDiff = 0;
-
-    diff = ((double)cur / (double)size) * 100;
-
-    if(perDiff < (int)diff)
-    {
-        perDiff = diff;
-        printf("Checking: %d\%\r", perDiff);
     }
 
     return;
@@ -105,7 +64,7 @@ void __exit(int err, char* arg)
 
         break;
 
-    case F_NOT_FOUND:
+    case FILE_NOT_FOUND:
         printf("ERROR : File %s not found\n", arg);
         exit(0);
 
@@ -118,5 +77,29 @@ void __exit(int err, char* arg)
         break;
     }
 
+    return;
+}
+
+void __checkB64File(uchar* ch)
+{
+    int i = 0;
+    int j = 0;
+
+    for(i = 0; i < NUM_CONV_BYTES; i++)
+    {
+        while(j < LEN_B64_CODE)
+        {
+            if(ch[i] == CODE[i])
+            {
+                break;
+            }
+            j++;
+        }
+
+        if(j == LEN_B64_CODE)
+        {
+            __exit(INV_FILE, NULL);
+        }
+    }
     return;
 }
