@@ -27,7 +27,7 @@ typedef unsigned char uchar;
 
 void help();
 void encode(FILE*, FILE*);
-void decode(FILE*, FILE*);
+int decode(FILE*, FILE*);
 void convTo(uchar*, int*, int);
 int convFrom(uchar*, uchar*);
 int findInd(uchar);
@@ -35,6 +35,7 @@ int checkB64File(FILE*);
 void convProgress(long, long);
 long sizeOfFile(FILE*);
 void __exit(int, char*);
-void __checkB64File(uchar*);
+int __checkB64File(uchar*);
+double countPerDiff(double, double);
 
 #endif /* HEAD_H_INCLUDED */

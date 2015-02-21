@@ -5,6 +5,7 @@ int main(int argc, char* argv[])
     FILE* inFile = NULL;
     FILE* outFile = NULL;
     int i = 0;
+    int err = TRUE;
 
     if(argc == 1)
     {
@@ -41,8 +42,6 @@ int main(int argc, char* argv[])
         __exit(FILE_NOT_FOUND, argv[2]);
     }
 
-    outFile = fopen(argv[3], "wb");
-
     if(!strcmp(argv[1], ENCODE))
     {
         encode(inFile, outFile);
@@ -50,7 +49,23 @@ int main(int argc, char* argv[])
 
     if(!strcmp(argv[1], DECODE))
     {
-        checkB64File(inFile) ? decode(inFile, outFile) : __exit(INV_FILE, argv[2]);
+        if(checkB64File(inFile))
+        {
+            outFile = fopen(argv[3], "wb");
+            err = decode(inFile, outFile);
+
+            if(!err)
+            {
+                fclose(outFile);
+                fopen(argv[3], "w");/*cleaning file*/
+                __exit(INV_FILE, argv[2]);
+            }
+        }else
+        {
+            fclose(outFile);
+            fopen(argv[3], "w");/*cleaning file*/
+            __exit(INV_FILE, argv[2]);
+        }
     }
 
     fclose(inFile);

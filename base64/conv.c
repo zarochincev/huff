@@ -29,7 +29,7 @@ void encode(FILE* inFile, FILE* outFile)
     free(convByteInd);
 }
 
-void decode(FILE* inFile, FILE* outFile)
+int decode(FILE* inFile, FILE* outFile)
 {
     uchar* convByte = (uchar*)malloc(sizeof(uchar) * NUM_CONV_BYTES);
     uchar* origByte = (uchar*)malloc(sizeof(uchar) * MAX_NUM_ORIG_BYTES);
@@ -40,9 +40,14 @@ void decode(FILE* inFile, FILE* outFile)
     {
         convProgress(ftell(inFile), inFileSize);
         memset(convByte, EMPTY, NUM_CONV_BYTES);
-
         fread(convByte, NUM_CONV_BYTES, 1, inFile);
-        __checkB64File(convByte);
+
+        if(!__checkB64File(convByte))
+        {
+            return FALSE;
+        }
+
+
         numOrigByte = convFrom(convByte, origByte);
 
         fwrite(origByte, numOrigByte, 1, outFile);
@@ -51,27 +56,27 @@ void decode(FILE* inFile, FILE* outFile)
 
     free(convByte);
     free(origByte);
+
+    return TRUE;
 }
 
 void convTo(uchar* origByte, int* convByteInd, int numByte)
 {
-    if(numByte == 0)
+    switch(numByte)
     {
-        return;
-    }
+    case 0:
 
-    if(numByte == 1)
-    {
+        return;
+
+    case 1:
         convByteInd[0] = origByte[0] >> 2;
         convByteInd[1] = (origByte[0] & 0x3) << 4;
         convByteInd[2] = LAST_CODE_IND;
         convByteInd[3] = LAST_CODE_IND;
 
         return;
-    }
 
-    if(numByte == 2)
-    {
+    case 2:
         convByteInd[0] = origByte[0] >> 2;
         convByteInd[1] = (origByte[0] & 0x3) << 4;
         convByteInd[1] = convByteInd[1] | (origByte[1] >> 4);
@@ -79,16 +84,17 @@ void convTo(uchar* origByte, int* convByteInd, int numByte)
         convByteInd[3] = LAST_CODE_IND;
 
         return;
+
+    default:
+        convByteInd[0] = origByte[0] >> 2;
+        convByteInd[1] = (origByte[0] & 0x3) << 4;
+        convByteInd[1] = convByteInd[1] | (origByte[1] >> 4);
+        convByteInd[2] = (origByte[1] & 0xf) << 2;
+        convByteInd[2] = convByteInd[2] | (origByte[2] >> 6);
+        convByteInd[3] = origByte[2] & 0x3f;
+
+        return;
     }
-
-    convByteInd[0] = origByte[0] >> 2;
-    convByteInd[1] = (origByte[0] & 0x3) << 4;
-    convByteInd[1] = convByteInd[1] | (origByte[1] >> 4);
-    convByteInd[2] = (origByte[1] & 0xf) << 2;
-    convByteInd[2] = convByteInd[2] | (origByte[2] >> 6);
-    convByteInd[3] = origByte[2] & 0x3f;
-
-    return;
 }
 
 int convFrom(uchar* convByte, uchar* origByte)
@@ -140,5 +146,6 @@ int findInd(uchar byte)
             return i;
         }
     }
+
     return ERROR;
 }

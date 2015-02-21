@@ -12,35 +12,32 @@ int checkB64File(FILE* file)
     return TRUE;
 }
 
-void convProgress(long cur, long size)
+int __checkB64File(uchar* ch)
 {
-    double diff = 0;
-    static int perDiff = 0;
+    int i = 0;
+    int j = 0;
 
-    diff = ((double)cur / (double)size) * 100;
-
-    if(perDiff < (int)diff)
+    for(i = 0; i < NUM_CONV_BYTES; i++)
     {
-        perDiff = diff;
-        printf("Progress: %d\%\r", perDiff);
+        while(j < LEN_B64_CODE)
+        {
+            if(ch[i] == CODE[j])
+            {
+                j = 0;
+
+                break;
+            }
+
+            j++;
+        }
+
+        if(j == LEN_B64_CODE)
+        {
+            return FALSE;
+        }
     }
-
-    return;
+    return TRUE;
 }
-
-long sizeOfFile(FILE* file)
-{
-    long fSize = 0L;
-
-    fseek(file, 0, SEEK_END);
-
-    fSize = ftell(file);
-
-    rewind(file);
-
-    return fSize;
-}
-
 
 void __exit(int err, char* arg)
 {
@@ -77,29 +74,5 @@ void __exit(int err, char* arg)
         break;
     }
 
-    return;
-}
-
-void __checkB64File(uchar* ch)
-{
-    int i = 0;
-    int j = 0;
-
-    for(i = 0; i < NUM_CONV_BYTES; i++)
-    {
-        while(j < LEN_B64_CODE)
-        {
-            if(ch[i] == CODE[i])
-            {
-                break;
-            }
-            j++;
-        }
-
-        if(j == LEN_B64_CODE)
-        {
-            __exit(INV_FILE, NULL);
-        }
-    }
     return;
 }
