@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 
     if(!strcmp(argv[1], ENCODE))
     {
+        outFile = fopen(argv[3], "wb");
         encode(inFile, outFile);
     }
 
