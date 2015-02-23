@@ -14,7 +14,7 @@ int main()
         createTree(&root, node);
     }
 
-    printTree(root);
+    visitTree(root);
 
     return 0;
 }
@@ -26,6 +26,7 @@ void createNode(TREE** node, int val)
     (*node)->val = val;
     (*node)->left = NULL;
     (*node)->right = NULL;
+
 }
 
 void createTree(TREE** root, TREE* node)
@@ -48,17 +49,64 @@ void createTree(TREE** root, TREE* node)
     }
 }
 
-void printTree(TREE* node)
+void visitTree(TREE* root)
 {
-    printf("%d ", node->val);
+    QUEUE* queue = NULL;
 
-    if(node->left)
+    if(!root)
     {
-        printTree(node->left);
-    }else if(node->right)
-    {
-        printTree(node->right);
+        return;
     }
 
+    queue = (QUEUE*)malloc(sizeof(QUEUE));
+
+    enqueue(root, queue);
+
+    while(!isEmptyQueue(queue))
+    {
+        printf("%d ", queue->node->val);
+        dequeue(&queue);
+
+        if(root->left)
+        {
+            visitTree(root->left);
+        }
+
+        if(root->right)
+        {
+            visitTree(root->right);
+        }
+    }
+}
+
+void enqueue(TREE* node, QUEUE* queue)
+{
+    QUEUE* tmp = (QUEUE*)malloc(sizeof(QUEUE));
+
+    while(queue->next)
+    {
+        queue = queue->next;
+    }
+
+    tmp->node = node;
+    tmp->next = NULL;
+    queue->next = tmp;
+
     return;
+}
+
+void dequeue(QUEUE** queue)
+{
+    QUEUE* tmp = (*queue);
+
+    (*queue) = (*queue)->next;
+
+    free(tmp);
+
+    return;
+}
+
+int isEmptyQueue(QUEUE* queue)
+{
+    return (queue ? 1 : 0);
 }

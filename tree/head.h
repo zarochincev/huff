@@ -11,8 +11,17 @@ typedef struct __tree
     struct __tree* left;
 }TREE;
 
+typedef struct __queue
+{
+    TREE* node;
+    struct __queue* next;
+}QUEUE;
+
 void createTree(TREE**, TREE*);
-void printTree(TREE*);
 void createNode(TREE**, int);
+void enqueue(TREE*, QUEUE*);
+void dequeue(QUEUE**);
+int isEmptyQueue(QUEUE*);
+void visitTree(TREE*);
 
 #endif /* HEAD_H_INCLUDED*/
