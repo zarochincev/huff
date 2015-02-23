@@ -14,15 +14,18 @@ void encode(FILE* inFile, FILE* outFile)
 
         numReadedByte = fread(origByte, 1, MAX_NUM_ORIG_BYTES, inFile);
 
+        if(!numReadedByte)
+        {
+            break;
+        }
+
         convTo(origByte, convByteInd, numReadedByte);
 
-        if(numReadedByte)
+        for(i = 0; i < NUM_CONV_BYTES; i++)
         {
-            for(i = 0; i < NUM_CONV_BYTES; i++)
-            {
-                fwrite(&CODE[convByteInd[i]], 1, 1, outFile);
-            }
+            fwrite(&CODE[convByteInd[i]], 1, 1, outFile);
         }
+
     }while(numReadedByte);
 
     free(origByte);
@@ -40,7 +43,11 @@ int decode(FILE* inFile, FILE* outFile)
     {
         convProgress(ftell(inFile), inFileSize);
         memset(convByte, EMPTY, NUM_CONV_BYTES);
-        fread(convByte, NUM_CONV_BYTES, 1, inFile);
+
+        if(!fread(convByte, NUM_CONV_BYTES, 1, inFile))
+        {
+            break;
+        }
 
         if(!__checkB64File(convByte))
         {

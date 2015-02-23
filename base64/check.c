@@ -19,16 +19,12 @@ int __checkB64File(uchar* ch)
 
     for(i = 0; i < NUM_CONV_BYTES; i++)
     {
-        while(j < LEN_B64_CODE)
+        for(j = 0; j < LEN_B64_CODE; j++)
         {
             if(ch[i] == CODE[j])
             {
-                j = 0;
-
                 break;
             }
-
-            j++;
         }
 
         if(j == LEN_B64_CODE)

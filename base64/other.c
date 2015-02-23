@@ -28,6 +28,7 @@ void convProgress(long cur, long size)
     if(perDiff < (int)diff)
     {
         perDiff = diff;
+
         printf("Progress: %d%\r", perDiff);
     }
 
