@@ -8,10 +8,7 @@
 #define ERROR -1;
 #define HELP '?'
 #define ADD 'a'
-#define EXT 'x'
-#define DEL 'd'
-#define LIST 'l'
-#define INTEGR 't'
+#define EXTRACT 'x'
 #define PARAMETER '/'
 #define EMPTY 0
 
