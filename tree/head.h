@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct __tree
 {
@@ -19,8 +20,8 @@ typedef struct __queue
 
 void createTree(TREE**, TREE*);
 void createNode(TREE**, int);
-void enqueue(TREE*, QUEUE*);
-void dequeue(QUEUE**);
+void enqueue(TREE*, QUEUE**);
+int dequeue(QUEUE**);
 int isEmptyQueue(QUEUE*);
 void visitTree(TREE*);
 
