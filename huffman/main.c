@@ -15,6 +15,14 @@ int main(int argc, char* argv[])
 
     for(i = 1; i < argc; i++)
     {
+        if(!strcmp(argv[i], DEBUG))
+        {
+            #define _DEBUG_
+        }
+    }
+
+    for(i = 1; i < argc; i++)
+    {
         if(argv[i][0] == PARAMETER)
         {
             if(argv[i][1] == HELP)
@@ -27,7 +35,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    outFile = fopen(argv[3], "a");
+    outFile = fopen(argv[3], "w");
 
     if(argv[1][0] == PARAMETER)
     {

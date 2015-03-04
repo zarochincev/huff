@@ -1,59 +1,5 @@
 #include "head.h"
 
-SYMBOL* countSym(FILE* inFile)
-{
-    SYMBOL* sym = NULL;
-    SYMBOL* firstSym = NULL;
-    char ch = 0;
-    int numDiffSym = 0;
-
-    while((ch = fgetc(inFile)) != EOF)
-    {
-        if(!firstSym)
-        {
-            firstSym = (SYMBOL*)malloc(sizeof(SYMBOL));
-            firstSym->symbol = ch;
-            firstSym->number = 1;
-            firstSym->next = NULL;
-            sym = firstSym;
-            numDiffSym++;
-
-            continue;
-        }
-
-        while(sym)
-        {
-            if(ch == sym->symbol)
-            {
-                sym->number += 1;
-                sym = firstSym;
-
-                break;
-            }else if(sym->next)
-            {
-                sym = sym->next;
-
-                continue;
-            }else
-            {
-                sym->next = (SYMBOL*)malloc(sizeof(SYMBOL));
-                sym = sym->next;
-                sym->symbol = ch;
-                sym->number = 1;
-                sym->next = NULL;
-                sym = firstSym;
-                numDiffSym++;
-
-                break;
-            }
-        }
-    }
-
-    sortList(firstSym);
-
-    return firstSym;
-}
-
 void sortList(SYMBOL* head)
 {
     SYMBOL* temp = NULL;
@@ -65,15 +11,85 @@ void sortList(SYMBOL* head)
     {
         for(tmp = head; tmp; tmp = tmp->next)
         {
-            if(temp->number > tmp->number)
+            if(temp->freq < tmp->freq)
             {
-                tempNum = temp->number;
+                tempNum = temp->freq;
                 tempCh = temp->symbol;
-                temp->number = tmp->number;
+                temp->freq = tmp->freq;
                 temp->symbol = tmp->symbol;
-                tmp->number = tempNum;
+                tmp->freq = tempNum;
                 tmp->symbol = tempCh;
             }
         }
     }
+
+    return;
+}
+
+void writeSymbolFreq(SYMBOL* sym, FILE* file)
+{
+    if(sym)
+    {
+        fprintf(file, "%c%d", sym->symbol, sym->freq);
+
+        writeSymbolFreq(sym->next, file);
+    }
+
+    return;
+}
+
+QUEUE* dequeue(QUEUE** head)
+{
+    QUEUE* tmp = *head;
+
+    *head = (*head)->next;
+
+    return tmp;
+}
+
+void enqueue(QUEUE* sym, QUEUE* queue)
+{
+    while(getFreq(queue) <= getFreq(sym))
+    {
+        queue = queue->next;
+    }
+
+    sym->next = queue->next;
+    queue->next = sym;
+
+    return;
+}
+
+unsigned int getFreq(QUEUE* que)
+{
+    return que->node->symbol->freq;
+}
+
+QUEUE* createQueue(SYMBOL* sym)
+{
+    QUEUE* que = NULL;
+    QUEUE* head = que;
+
+    if(!head)
+    {
+        que = (QUEUE*)malloc(sizeof(QUEUE));
+
+        memset(que, 0, sizeof(QUEUE));
+
+        que->node->symbol = sym; /**< fail*/
+        sym = sym->next;
+        head = que;
+    }
+
+    while(sym)
+    {
+        que = (QUEUE*)malloc(sizeof(QUEUE));
+
+        memset(que, 0, sizeof(QUEUE));
+
+        que->node->symbol = sym;
+        sym = sym->next;
+    }
+
+    return head;
 }

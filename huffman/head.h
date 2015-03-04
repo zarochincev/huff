@@ -11,17 +11,38 @@
 #define EXTRACT 'x'
 #define PARAMETER '/'
 #define EMPTY 0
+#define DEBUG "/d"
 
-typedef struct SYM
+typedef struct __symbol
 {
-    char symbol;
-    int number;
-    struct SYM* next;
+    unsigned char symbol;
+    unsigned int freq;
+    struct __symbol* next;
 }SYMBOL;
 
+typedef struct __tree
+{
+    struct __tree* left;
+    struct __tree* right;
+    int code;
+    SYMBOL* symbol;
+}TREE;
+
+typedef struct __queue
+{
+    TREE* node;
+    struct __queue* next;
+}QUEUE;
+
 void pack(FILE*, FILE*);
-SYMBOL* countSym(FILE*);
+SYMBOL* countSymFreq(FILE*);
 void sortList(SYMBOL*);
 void help();
+void writeSymbolFreq(SYMBOL*, FILE*);
+void enqueue(QUEUE*, QUEUE*);
+TREE* createTree(QUEUE*);
+QUEUE* dequeue(QUEUE**);
+QUEUE* createQueue(SYMBOL*);
+unsigned int getFreq(QUEUE*);
 
 #endif /* HEAD_H_INCLUDED*/
