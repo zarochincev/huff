@@ -67,8 +67,10 @@ unsigned int getFreq(QUEUE* que)
 
 QUEUE* createQueue(SYMBOL* sym)
 {
+    SYMBOL* tmpSym = sym;
     QUEUE* que = NULL;
     QUEUE* head = que;
+    TREE* tmpNode = NULL;
 
     if(!head)
     {
@@ -76,19 +78,29 @@ QUEUE* createQueue(SYMBOL* sym)
 
         memset(que, 0, sizeof(QUEUE));
 
-        que->node->symbol = sym; /**< fail*/
-        sym = sym->next;
+        tmpNode = (TREE*)malloc(sizeof(TREE));
+
+        memset(tmpNode, 0, sizeof(TREE));
+
+        tmpNode->symbol = tmpSym;
+        que->node = tmpNode;
+        tmpSym = tmpSym->next;
         head = que;
     }
 
-    while(sym)
+    while(tmpSym)
     {
         que = (QUEUE*)malloc(sizeof(QUEUE));
 
         memset(que, 0, sizeof(QUEUE));
 
-        que->node->symbol = sym;
-        sym = sym->next;
+        tmpNode = (TREE*)malloc(sizeof(TREE));
+
+        memset(tmpNode, 0, sizeof(TREE));
+
+        tmpNode->symbol = tmpSym;
+        que->node = tmpNode;
+        tmpSym = tmpSym->next;
     }
 
     return head;

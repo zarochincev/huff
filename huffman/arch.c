@@ -79,17 +79,18 @@ SYMBOL* countSymFreq(FILE* inFile)
 
 TREE* createTree(QUEUE* sym)
 {
+    QUEUE* tmpSym = sym;
     TREE* node = NULL;
     QUEUE* firstChild = NULL;
     QUEUE* secondChild = NULL;
     QUEUE* emptySymbol = NULL;
 
-    while(sym)
+    while(tmpSym)
     {
-        if(sym->next)
-        {
-            firstChild = dequeue(&sym);
-            secondChild = dequeue(&sym);
+        if(tmpSym->next)
+        {puts("!!");
+            firstChild = dequeue(&tmpSym);
+            secondChild = dequeue(&tmpSym);
             node = (TREE*)malloc(sizeof(TREE));
             node->left = firstChild->node;
             node->right = secondChild->node;
@@ -99,7 +100,7 @@ TREE* createTree(QUEUE* sym)
 
             emptySymbol->node->symbol->freq = getFreq(firstChild) + getFreq(secondChild);
 
-            enqueue(emptySymbol, sym);
+            enqueue(emptySymbol, tmpSym);
         }
     }
 
