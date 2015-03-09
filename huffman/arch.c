@@ -10,6 +10,13 @@ void pack(FILE* inFile, FILE* outFile)
     writeSymbolFreq(firstSym, outFile);
 
     queue = createQueue(firstSym);
+
+    #ifdef _DEBUG_
+
+    printQueue(queue);
+
+    #endif
+
     root = createTree(queue);
 
     #ifdef _DEBUG_
@@ -85,23 +92,20 @@ TREE* createTree(QUEUE* sym)
     QUEUE* secondChild = NULL;
     QUEUE* emptySymbol = NULL;
 
-    while(tmpSym)
+    while(tmpSym->next)
     {
-        if(tmpSym->next)
-        {puts("!!");
-            firstChild = dequeue(&tmpSym);
-            secondChild = dequeue(&tmpSym);
-            node = (TREE*)malloc(sizeof(TREE));
-            node->left = firstChild->node;
-            node->right = secondChild->node;
-            emptySymbol = (QUEUE*)malloc(sizeof(QUEUE));
+        firstChild = dequeue(&tmpSym);
+        secondChild = dequeue(&tmpSym);
+        node = (TREE*)malloc(sizeof(TREE));
+        node->left = firstChild->node;
+        node->right = secondChild->node;
+        emptySymbol = (QUEUE*)malloc(sizeof(QUEUE));
 
-            memset(emptySymbol, 0, sizeof(QUEUE));
+        memset(emptySymbol, 0, sizeof(QUEUE));
 
-            emptySymbol->node->symbol->freq = getFreq(firstChild) + getFreq(secondChild);
+        emptySymbol->node->symbol->freq = getFreq(firstChild) + getFreq(secondChild);
 
-            enqueue(emptySymbol, tmpSym);
-        }
+        enqueue(emptySymbol, tmpSym);
     }
 
     return node;

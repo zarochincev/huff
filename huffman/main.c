@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
         if(!strcmp(argv[i], DEBUG))
         {
             #define _DEBUG_
+            #include "debug.h"
         }
     }
 

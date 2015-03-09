@@ -88,19 +88,9 @@ QUEUE* createQueue(SYMBOL* sym)
         head = que;
     }
 
-    while(tmpSym)
+    if(sym->next)
     {
-        que = (QUEUE*)malloc(sizeof(QUEUE));
-
-        memset(que, 0, sizeof(QUEUE));
-
-        tmpNode = (TREE*)malloc(sizeof(TREE));
-
-        memset(tmpNode, 0, sizeof(TREE));
-
-        tmpNode->symbol = tmpSym;
-        que->node = tmpNode;
-        tmpSym = tmpSym->next;
+        head->next = createQueue(sym->next);
     }
 
     return head;

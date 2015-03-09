@@ -2,7 +2,7 @@
 
 void printTree(TREE* root)
 {
-    FILE* err = fopen("err.txt", "w");
+    FILE* err = fopen("err.txt", "a");
 
     if(!root)
     {
@@ -19,5 +19,22 @@ void printTree(TREE* root)
     if(root->right)
     {
         printTree(root->right);
+    }
+}
+
+void printQueue(QUEUE* queue)
+{
+    FILE* err = fopen("err.txt", "a");
+puts("!!!");
+    if(!queue)
+    {
+        return;
+    }
+
+    fprintf(err, "%c ", queue->node->symbol->symbol);
+
+    if(queue->next)
+    {
+        printQueue(queue->next);
     }
 }
