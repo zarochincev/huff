@@ -11,19 +11,19 @@ void pack(FILE* inFile, FILE* outFile)
 
     queue = createQueue(firstSym);
 
-    #ifdef _DEBUG_
+    #ifdef _DEBUG_HUFF_QUEUE_
 
     printQueue(queue);
 
-    #endif
+    #endif /*_DEBUG_HUFF_QUEUE_*/
 
     root = createTree(queue);
 
-    #ifdef _DEBUG_
+    #ifdef _DEBUG_HUFF_TREE_
 
     printTree(root);
 
-    #endif /* _DEBUG_*/
+    #endif /*_DEBUG_HUFF_TREE_*/
 }
 
 SYMBOL* countSymFreq(FILE* inFile)

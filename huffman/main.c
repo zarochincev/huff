@@ -15,15 +15,6 @@ int main(int argc, char* argv[])
 
     for(i = 1; i < argc; i++)
     {
-        if(!strcmp(argv[i], DEBUG))
-        {
-            #define _DEBUG_
-            #include "debug.h"
-        }
-    }
-
-    for(i = 1; i < argc; i++)
-    {
         if(argv[i][0] == PARAMETER)
         {
             if(argv[i][1] == HELP)

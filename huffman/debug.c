@@ -1,4 +1,6 @@
-#include "debug.h"
+#include "head.h"
+
+#ifdef _DEBUG_HUFF_TREE_
 
 void printTree(TREE* root)
 {
@@ -22,10 +24,14 @@ void printTree(TREE* root)
     }
 }
 
+#endif /*_DEBUG_HUFF_TREE_*/
+
+#ifdef _DEBUG_HUFF_QUEUE_
+
 void printQueue(QUEUE* queue)
 {
     FILE* err = fopen("err.txt", "a");
-puts("!!!");
+
     if(!queue)
     {
         return;
@@ -38,3 +44,5 @@ puts("!!!");
         printQueue(queue->next);
     }
 }
+
+#endif /*_DEBUG_HUFF_QUEUE_*/

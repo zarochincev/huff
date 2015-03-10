@@ -5,13 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define _CRT_SECURE_NO_WARNINGS /*kill visual studio errors*/
+
 #define ERROR -1;
 #define HELP '?'
 #define ADD 'a'
 #define EXTRACT 'x'
 #define PARAMETER '/'
 #define EMPTY 0
-#define DEBUG "/d"
+
+#define _DEBUG_HUFF_QUEUE_
+/*#define _DEBUG_HUFF_TREE_*/
 
 typedef struct __symbol
 {
@@ -44,5 +48,15 @@ TREE* createTree(QUEUE*);
 QUEUE* dequeue(QUEUE**);
 QUEUE* createQueue(SYMBOL*);
 unsigned int getFreq(QUEUE*);
+
+#ifdef _DEBUG_HUFF_TREE_
+
+#include "debug.h"
+
+#elifdef _DEBUG_HUFF_QUEUE_
+
+#include "debug.h"
+
+#endif /* _DEBUG_HUFF_*/
 
 #endif /* HEAD_H_INCLUDED*/
