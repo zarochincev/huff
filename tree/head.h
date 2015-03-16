@@ -10,19 +10,90 @@ typedef struct __tree
     int val;
     struct __tree* right;
     struct __tree* left;
+    int height;
 }TREE;
 
-typedef struct __queue
-{
-    TREE* node;
-    struct __queue* next;
-}QUEUE;
-
+/** \brief
+ *  insert node in tree
+ *
+ * \param TREE** root of tree
+ * \param TREE* inserts node
+ * \return void
+ *
+ */
 void createTree(TREE**, TREE*);
+
+/** \brief
+ *   create node
+ *
+ * \param TREE** node
+ * \param int key
+ * \return void
+ *
+ */
 void createNode(TREE**, int);
-void enqueue(TREE*, QUEUE**);
-int dequeue(QUEUE**);
-int isEmptyQueue(QUEUE*);
+
+/** \brief
+ *   visit tree
+ *
+ * \param TREE* root of tree
+ * \return void
+ *
+ */
 void visitTree(TREE*);
+
+/** \brief
+ *  count balance factor of node
+ *
+ * \param TREE* node
+ * \return int
+ *
+ */
+int balanceFactor(TREE*);
+
+/** \brief
+ *  corrects nodes height
+ *
+ * \param TREE* node
+ * \return void
+ *
+ */
+void restoreHeight(TREE*);
+
+/** \brief
+ *  left rotate
+ *
+ * \param TREE* node
+ * \return TREE*
+ *
+ */
+TREE* turnLeft(TREE*);
+
+/** \brief
+ *   right rotate
+ *
+ * \param TREE* node
+ * \return TREE*
+ *
+ */
+TREE* turnRight(TREE*);
+
+/** \brief
+ *  balancing node
+ *
+ * \param TREE* node
+ * \return TREE*
+ *
+ */
+TREE* balance(TREE*);
+
+/** \brief
+ *  destroy tree
+ *
+ * \param TREE* root
+ * \return void
+ *
+ */
+void deleteTree(TREE*);
 
 #endif /* HEAD_H_INCLUDED*/

@@ -1,20 +1,41 @@
 #include "head.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    int arr[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int i = 0;
+    FILE* inFile = NULL;
+    FILE* outFile = NULL;
+    int key = 0;
     TREE* root = NULL;
     TREE* node = NULL;
 
-    for(i = 0; i < 10; i++)
+    if(argc != 3)
     {
-        scanf("%d", &arr[i]);
-        createNode(&node, arr[i]);
+        puts("incorrect parameters");
+
+        return 0;
+    }
+
+    inFile = fopen(argv[1], "r");
+
+    if(!inFile)
+    {
+        printf("file %s not found", argv[1]);
+
+        return 0;
+    }
+
+    outFile = fopen(argv[2], "w");
+
+    while(!feof(inFile))
+    {
+        fscanf(inFile, "%d", &key);
+        createNode(&node, key);
         createTree(&root, node);
     }
 
     visitTree(root);
+
+    fprintf(outFile, "%d", root->height);
 
     return 0;
 }
@@ -24,9 +45,9 @@ void createNode(TREE** node, int val)
     (*node) = (TREE*)malloc(sizeof(TREE));
 
     (*node)->val = val;
+    (*node)->height = 1;
     (*node)->left = NULL;
     (*node)->right = NULL;
-
 }
 
 void createTree(TREE** root, TREE* node)
@@ -47,71 +68,28 @@ void createTree(TREE** root, TREE* node)
     {
         createTree(&(*root)->right, node);
     }
+
+    (*root) = balance((*root));
 }
 
-void visitTree(TREE* root)
+void deleteTree(TREE* root)
 {
-    QUEUE* queue = NULL;
-    int visited = 0;
-
     if(!root)
     {
         return;
     }
 
-    queue = (QUEUE*)malloc(sizeof(QUEUE));
-
-    memset(queue, 0, sizeof(QUEUE));
-    enqueue(root, &queue);
-
-    while(isEmptyQueue(queue))
+    if(root->left)
     {
-        visited = dequeue(&queue);
-
-        printf("%d ", visited);
-
-        if(root->left)
-        {
-            visitTree(root->left);
-        }
-
-        if(root->right)
-        {
-            visitTree(root->right);
-        }
-    }
-}
-
-void enqueue(TREE* node, QUEUE** queue)
-{
-    QUEUE* tmp = (QUEUE*)malloc(sizeof(QUEUE));
-
-    while((*queue)->next)
-    {
-        (*queue) = (*queue)->next;
+        deleteTree(root->left);
     }
 
-    tmp->node = node;
-    tmp->next = NULL;
-    (*queue) = tmp;
+    if(root->right)
+    {
+        deleteTree(root->right);
+    }
+
+    free(root);
 
     return;
-}
-
-int dequeue(QUEUE** queue)
-{
-    int val;
-    QUEUE* tmp = (*queue);
-
-    val = (*queue)->node->val;
-    (*queue) = (*queue)->next;
-
-    free(tmp);
-
-    return val;
-}
-
-int isEmptyQueue(QUEUE* queue)
-{
-    return (queue ? 1 : 0);
 }
