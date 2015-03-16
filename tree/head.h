@@ -96,4 +96,13 @@ TREE* balance(TREE*);
  */
 void deleteTree(TREE*);
 
+/** \brief
+ *  print tree height
+ *
+ * \param root TREE* root
+ * \return void
+ *
+ */
+void printHeight(TREE* root);
+
 #endif /* HEAD_H_INCLUDED*/

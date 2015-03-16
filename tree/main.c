@@ -1,14 +1,14 @@
 #include "head.h"
 
-int main(int argc, char* argv[])
+int main(/*int argc, char* argv[]*/)
 {
-    FILE* inFile = NULL;
-    FILE* outFile = NULL;
+    /*FILE* inFile = NULL;
+    FILE* outFile = NULL;*/
     int key = 0;
     TREE* root = NULL;
     TREE* node = NULL;
 
-    if(argc != 3)
+    /*if(argc != 3)
     {
         puts("incorrect parameters");
 
@@ -31,11 +31,25 @@ int main(int argc, char* argv[])
         fscanf(inFile, "%d", &key);
         createNode(&node, key);
         createTree(&root, node);
+    }*/
+
+    scanf("%d", &key);
+
+    if(key == 0)
+    {
+
+    }
+
+     while(!feof(stdin))
+    {
+        fscanf(stdin, "%d", &key);
+        createNode(&node, key);
+        createTree(&root, node);
     }
 
     visitTree(root);
 
-    fprintf(outFile, "%d", root->height);
+    printHeight(root);
 
     return 0;
 }
@@ -92,4 +106,17 @@ void deleteTree(TREE* root)
     free(root);
 
     return;
+}
+
+void printHeight(TREE* root)
+{
+    if(!root)
+    {
+        printf("%d", 0);
+
+        return;
+    }
+
+    printf("%d", root->height - 1);
+
 }
