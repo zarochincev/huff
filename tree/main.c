@@ -59,7 +59,7 @@ void createNode(TREE** node, int val)
     (*node) = (TREE*)malloc(sizeof(TREE));
 
     (*node)->val = val;
-    (*node)->height = 1;
+    (*node)->height = 0;
     (*node)->left = NULL;
     (*node)->right = NULL;
 }
@@ -117,6 +117,6 @@ void printHeight(TREE* root)
         return;
     }
 
-    printf("%d", root->height - 1);
+    printf("%d", root->height);
 
 }
