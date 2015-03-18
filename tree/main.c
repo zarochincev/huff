@@ -2,11 +2,14 @@
 
 int main(/*int argc, char* argv[]*/)
 {
-    /*FILE* inFile = NULL;
-    FILE* outFile = NULL;*/
+    FILE* inFile = fopen("in.txt", "r");
+    /*FILE* outFile = NULL;*/
     int key = 0;
+    int num = 0;
+    int i = 0;
     TREE* root = NULL;
     TREE* node = NULL;
+/*    FILE* debugFile = fopen("debugFile.txt", "w");*/
 
     /*if(argc != 3)
     {
@@ -33,23 +36,22 @@ int main(/*int argc, char* argv[]*/)
         createTree(&root, node);
     }*/
 
-    scanf("%d", &key);
+    /*fscanf(stdin, "%d", &num); */
+    fscanf(inFile, "%d", &num);
 
-    if(key == 0)
+    /*fprintf(debugFile, "!%d!\n", num);*/
+
+    for(i = 0; i < num; i++)
     {
-
-    }
-
-     while(!feof(stdin))
-    {
-        fscanf(stdin, "%d", &key);
+        fscanf(inFile, "%d", &key);
+        /*fscanf(stdin, "%d", &key);*/
         createNode(&node, key);
         createTree(&root, node);
     }
 
-    visitTree(root);
-
     printHeight(root);
+    deleteTree(root);
+    /*visitTree(root, debugFile);*/
 
     return 0;
 }
@@ -58,10 +60,10 @@ void createNode(TREE** node, int val)
 {
     (*node) = (TREE*)malloc(sizeof(TREE));
 
+    memset((*node), 0, sizeof(TREE));
+
     (*node)->val = val;
-    (*node)->height = 0;
-    (*node)->left = NULL;
-    (*node)->right = NULL;
+    (*node)->height = 1;
 }
 
 void createTree(TREE** root, TREE* node)
@@ -112,11 +114,10 @@ void printHeight(TREE* root)
 {
     if(!root)
     {
-        printf("%d", 0);
+        fprintf(stdout, "%d", 0);
 
         return;
     }
 
-    printf("%d", root->height);
-
+    fprintf(stdout, "%d", root->height);
 }

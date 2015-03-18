@@ -10,7 +10,7 @@ typedef struct __tree
     int val;
     struct __tree* right;
     struct __tree* left;
-    int height;
+    char height;
 }TREE;
 
 /** \brief
@@ -37,10 +37,11 @@ void createNode(TREE**, int);
  *   visit tree
  *
  * \param TREE* root of tree
+ * \param FILE* file for debug print
  * \return void
  *
  */
-void visitTree(TREE*);
+void visitTree(TREE*, FILE*);
 
 /** \brief
  *  count balance factor of node

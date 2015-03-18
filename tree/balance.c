@@ -81,25 +81,25 @@ TREE* balance(TREE* node)
 {
     restoreHeight(node);
 
-    if(balanceFactor(node) == 2) /**< condition for small right rotate */
+    if(balanceFactor(node) >= 1) /**< condition for small right rotate */
     {
         if(balanceFactor(node->right) < 0) /**< condition for big left rotate */
         {
             node->right = turnRight(node->right);
         }
 
-        return turnLeft(node);
+        node = turnLeft(node);
     }
 
-    if(balanceFactor(node) == -2) /**< condition for small left rotate */
+    if(balanceFactor(node) <= -1) /**< condition for small left rotate */
     {
         if(balanceFactor(node->left) > 0) /**< condition for big right rotate */
         {
             node->left = turnLeft(node->left);
         }
 
-        return turnRight(node);
+        node = turnRight(node);
     }
 
-    return node; /**< Balancing is not required */
+    return node;
 }
