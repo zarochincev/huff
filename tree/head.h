@@ -10,38 +10,18 @@ typedef struct __tree
     int val;
     struct __tree* right;
     struct __tree* left;
-    char height;
+    int height;
 }TREE;
 
 /** \brief
  *  insert node in tree
  *
  * \param TREE** root of tree
- * \param TREE* inserts node
+ * \param int inserts nodes val
  * \return void
  *
  */
-void createTree(TREE**, TREE*);
-
-/** \brief
- *   create node
- *
- * \param TREE** node
- * \param int key
- * \return void
- *
- */
-void createNode(TREE**, int);
-
-/** \brief
- *   visit tree
- *
- * \param TREE* root of tree
- * \param FILE* file for debug print
- * \return void
- *
- */
-void visitTree(TREE*, FILE*);
+void insertToTree(TREE**, int);
 
 /** \brief
  *  count balance factor of node
@@ -91,11 +71,11 @@ TREE* balance(TREE*);
 /** \brief
  *  destroy tree
  *
- * \param TREE* root
+ * \param TREE** root
  * \return void
  *
  */
-void deleteTree(TREE*);
+void deleteTree(TREE**);
 
 /** \brief
  *  print tree height

@@ -1,111 +1,71 @@
 #include "head.h"
 
-int main(/*int argc, char* argv[]*/)
+int main()
 {
-    FILE* inFile = fopen("in.txt", "r");
-    /*FILE* outFile = NULL;*/
     int key = 0;
     int num = 0;
     int i = 0;
     TREE* root = NULL;
-    TREE* node = NULL;
-/*    FILE* debugFile = fopen("debugFile.txt", "w");*/
 
-    /*if(argc != 3)
-    {
-        puts("incorrect parameters");
-
-        return 0;
-    }
-
-    inFile = fopen(argv[1], "r");
-
-    if(!inFile)
-    {
-        printf("file %s not found", argv[1]);
-
-        return 0;
-    }
-
-    outFile = fopen(argv[2], "w");
-
-    while(!feof(inFile))
-    {
-        fscanf(inFile, "%d", &key);
-        createNode(&node, key);
-        createTree(&root, node);
-    }*/
-
-    /*fscanf(stdin, "%d", &num); */
-    fscanf(inFile, "%d", &num);
-
-    /*fprintf(debugFile, "!%d!\n", num);*/
+    fscanf(stdin, "%d", &num);
 
     for(i = 0; i < num; i++)
     {
-        fscanf(inFile, "%d", &key);
-        /*fscanf(stdin, "%d", &key);*/
-        createNode(&node, key);
-        createTree(&root, node);
+        fscanf(stdin, "%d", &key);
+        insertToTree(&root, key);
     }
 
     printHeight(root);
-    deleteTree(root);
-    /*visitTree(root, debugFile);*/
+    deleteTree(&root);
 
     return 0;
 }
 
-void createNode(TREE** node, int val)
-{
-    (*node) = (TREE*)malloc(sizeof(TREE));
-
-    memset((*node), 0, sizeof(TREE));
-
-    (*node)->val = val;
-    (*node)->height = 1;
-}
-
-void createTree(TREE** root, TREE* node)
+void insertToTree(TREE** root, int val)
 {
     if(!(*root))
     {
-        (*root) = node;
+        (*root) = (TREE*)malloc(sizeof(TREE));
+        memset((*root), 0, sizeof(TREE));
+        (*root)->val = val;
+        (*root)->height = 1;
 
         return;
     }
 
-    if(node->val <= (*root)->val)
+    if(val <= (*root)->val)
     {
-        createTree(&(*root)->left, node);
+        insertToTree(&(*root)->left, val);
     }
 
-    if(node->val > (*root)->val)
+    if(val > (*root)->val)
     {
-        createTree(&(*root)->right, node);
+        insertToTree(&(*root)->right, val);
     }
 
     (*root) = balance((*root));
+
+    return;
 }
 
-void deleteTree(TREE* root)
+void deleteTree(TREE** root)
 {
-    if(!root)
+    if(!(*root))
     {
         return;
     }
 
-    if(root->left)
+    if((*root)->left)
     {
-        deleteTree(root->left);
+        deleteTree(&(*root)->left);
     }
 
-    if(root->right)
+    if((*root)->right)
     {
-        deleteTree(root->right);
+        deleteTree(&(*root)->right);
     }
 
-    free(root);
+    free((*root));
 
     return;
 }
