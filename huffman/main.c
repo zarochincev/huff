@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
                 if(!inFile)
                 {
-                    printf("File %s not found", argv[1]);
+                    printf("File %s not found", argv[2]);
                 }
 
                 pack(inFile, outFile);

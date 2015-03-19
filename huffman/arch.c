@@ -13,7 +13,7 @@ void pack(FILE* inFile, FILE* outFile)
 
     #ifdef _DEBUG_HUFF_QUEUE_
 
-    printQueue(queue);
+    printQueue(queue); /**< WARNING : implicit declaration of function 'printQueue' */
 
     #endif /*_DEBUG_HUFF_QUEUE_*/
 
@@ -103,7 +103,7 @@ TREE* createTree(QUEUE* sym)
 
         memset(emptySymbol, 0, sizeof(QUEUE));
 
-        emptySymbol->node->symbol->freq = getFreq(firstChild) + getFreq(secondChild);
+        emptySymbol->node->symbol->freq = getFreq(firstChild) + getFreq(secondChild); /**< segmentation fault */
 
         enqueue(emptySymbol, tmpSym);
     }

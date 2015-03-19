@@ -14,9 +14,6 @@
 #define PARAMETER '/'
 #define EMPTY 0
 
-#define _DEBUG_HUFF_QUEUE_
-/*#define _DEBUG_HUFF_TREE_*/
-
 typedef struct __symbol
 {
     unsigned char symbol;
@@ -48,6 +45,9 @@ TREE* createTree(QUEUE*);
 QUEUE* dequeue(QUEUE**);
 QUEUE* createQueue(SYMBOL*);
 unsigned int getFreq(QUEUE*);
+
+/*#define _DEBUG_HUFF_QUEUE_*/
+/*#define _DEBUG_HUFF_TREE_*/
 
 #ifdef _DEBUG_HUFF_TREE_
 

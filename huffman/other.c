@@ -69,7 +69,7 @@ QUEUE* createQueue(SYMBOL* sym)
 {
     SYMBOL* tmpSym = sym;
     QUEUE* que = NULL;
-    QUEUE* head = que;
+    QUEUE* head = NULL;
     TREE* tmpNode = NULL;
 
     if(!head)
