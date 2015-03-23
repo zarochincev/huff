@@ -24,6 +24,6 @@ int hashFunc(char*);
 void generateWord(HASH**);
 void insertToHash(HASH*, HASH*[]);
 char* findWord(char*, HASH*[]);
-void insertToList(HASH*, HASH*);
+void insertToList(HASH**, HASH*);
 
 #endif /* HEAD_H_INCLUDED*/
