@@ -82,3 +82,13 @@ void insertToHash(HASH* word, HASH* hashMap[MAX_HASH_SIZE])
 {
     hashMap[hashFunc(word->key) % MAX_HASH_SIZE] = word;
 }
+
+char* findWord(char* key, HASH* hashMap[MAX_HASH_SIZE])
+{
+    return (hashMap[hashFunc(key) % MAX_HASH_SIZE]->val);
+}
+
+void deledeWord(char* key, HASH* hashMap[MAX_HASH_SIZE])
+{
+    memset(hashMap[hashFunc(key) % MAX_HASH_SIZE], 0, sizeof(HASH));
+}

@@ -23,5 +23,7 @@ typedef struct __hash
 int hashFunc(char*);
 void generateWord(HASH**);
 void insertToHash(HASH*, HASH*[]);
+char* findWord(char*, HASH*[]);
+void deledeWord(char*, HASH*[]);
 
 #endif /* HEAD_H_INCLUDED*/
