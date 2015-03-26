@@ -14,8 +14,8 @@ int main()
         fscanf(stdin, "%d", &key);
         insertToTree(&root, key);
     }
-
     printHeight(root);
+
     deleteTree(&root);
 
     return 0;
