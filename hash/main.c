@@ -1,94 +1,111 @@
 #include "head.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-    int numOfWords = 0;
-    HASH* word = NULL;
-    HASH* hashMap[MAX_HASH_SIZE];
+    FILE* inFile = NULL;
+    FILE* outFile = NULL;
+    HASH* pair = NULL;
+    HASH** hashTable = NULL;
+    HASH* tmp = NULL;
     int i = 0;
 
-    for(i = 0; i < MAX_HASH_SIZE; i++)
+    inFile = fopen(argv[1], "r");
+
+    if(!inFile)
     {
-        hashMap[i] = (HASH*)calloc(1, sizeof(HASH));
+        __exit(INCORRECT_FILE, argv[1]);
     }
 
-    scanf("%d", &numOfWords);
+    outFile = fopen(argv[2], "w");
 
-    for(; numOfWords > 0; numOfWords--)
+    if(!outFile)
     {
-        generateWord(&word);
-        insertToHash(word, hashMap);
+        __exit(INCORRECT_FILE, argv[2]);
+    }
+
+    hashTable = (HASH**)calloc(MAX_HASH_SIZE, sizeof(HASH));
+
+    if(!hashTable)
+    {
+        __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
+    }
+
+    for(i = 0; !feof(inFile); i++)
+    {
+        pair = (HASH*)malloc(sizeof(HASH));
+
+        if(!pair)
+        {
+            __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
+        }
+
+        memset(pair, 0, sizeof(HASH));
+
+        pair->val = (char*)malloc(sizeof(char) * 256);
+
+        if(!pair->val)
+        {
+            __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
+        }
+
+        memset(pair->val, 0, sizeof(char));
+
+        fscanf(inFile, "%d%s", &pair->key, pair->val);
+        insertToHashTable(pair, hashTable);
     }
 
     for(i = 0; i < MAX_HASH_SIZE; i++)
     {
-        printf("%d) %s\n", i, hashMap[i]->val);
+        tmp = hashTable[i];
+
+        while(tmp)
+        {
+            fprintf(outFile, "%d %d %s\n", hashFunc(tmp->key), tmp->key, tmp->val);
+
+            tmp = tmp->next;
+        }
     }
 
     return 0;
 }
 
-int hashFunc(char* key)
+void __exit(int error, char* fileName)
 {
-    int result = 0;
-    int i = 0;
-
-    for(i = 0; key[i]; i++)
+    switch(error)
     {
-        result += (result * 255) + key[i];
+    case INCORRECT_FILE:
+        printf("ERROR : %s incorrect file", fileName);
+        exit(INCORRECT_FILE);
+
+    case MEMORY_IS_NOT_ALLOCATED:
+        puts("ERROR : memory is not allocated");
+        exit(MEMORY_IS_NOT_ALLOCATED);
+    }
+}
+
+void insertToHashTable(HASH* pair, HASH** hashTable)
+{
+    int index = hashFunc(pair->key);
+    HASH* tmp = NULL;
+
+    if(!hashTable[index])
+    {
+        hashTable[index] = pair;
+
+        return;
     }
 
-    return result;
-}
+    tmp = hashTable[index];
 
-void generateWord(HASH** word)
-{
-    static int prevSeed = 0;
-    int __seed = 0;
-    int i = 0;
-    char* val = (char*)calloc(1, sizeof(char) * WORD_LENGHT_WITH_FINEL_ZERO);
-    char* key = (char*)calloc(1, sizeof(char) * KEY_LENGHT_WITH_FINEL_ZERO);
-
-    *word = (HASH*)calloc(1, sizeof(HASH));
-
-    __seed = time(NULL);
-
-    while(__seed == prevSeed)
+    while(tmp->next)
     {
-        __seed = time(NULL);
+        tmp = tmp->next;
     }
 
-    prevSeed = __seed;
-
-    srand(__seed);
-
-    for(i = 0; i < WORD_LENGHT; i++)
-    {
-        val[i] = rand() % ('z' - 'a') + 'a';
-    }
-
-    val[WORD_LENGHT] = '\0';
-
-    key = strncpy(key, val, KEY_LENGHT);
-
-    key[KEY_LENGHT] = '\0';
-
-    (*word)->val = val;
-    (*word)->key = key;
-    (*word)->next = NULL;
+    tmp->next = pair;
 }
 
-void insertToHash(HASH* word, HASH* hashMap[MAX_HASH_SIZE])
+int hashFunc(int key)
 {
-    hashMap[hashFunc(word->key) % MAX_HASH_SIZE] = word;
-}
-
-char* findWord(char* key, HASH* hashMap[MAX_HASH_SIZE])
-{
-    return (hashMap[hashFunc(key) % MAX_HASH_SIZE]->val);
-}
-
-void deledeWord(char* key, HASH* hashMap[MAX_HASH_SIZE])
-{
-    memset(hashMap[hashFunc(key) % MAX_HASH_SIZE], 0, sizeof(HASH));
+    return (key % MAX_HASH_SIZE);
 }

@@ -3,27 +3,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
-#include <time.h>
 
-#define WORD_LENGHT 10
-#define WORD_LENGHT_WITH_FINEL_ZERO ((WORD_LENGHT) + (1))
-#define KEY_LENGHT 4
-#define KEY_LENGHT_WITH_FINEL_ZERO ((KEY_LENGHT) + (1))
-#define MAX_HASH_SIZE 10
+#define INCORRECT_FILE 1
+#define MEMORY_IS_NOT_ALLOCATED 2
+#define MAX_HASH_SIZE 3
 
 typedef struct __hash
 {
+    int key;
     char* val;
-    char* key;
     struct __hash* next;
 }HASH;
 
-int hashFunc(char*);
-void generateWord(HASH**);
-void insertToHash(HASH*, HASH*[]);
-char* findWord(char*, HASH*[]);
-void insertToList(HASH**, HASH*);
+void __exit(int, char*);
+void insertToHashTable(HASH*, HASH**);
+int hashFunc(int);
 
 #endif /* HEAD_H_INCLUDED*/
