@@ -41,16 +41,16 @@ int main(int argc, char* argv[])
 
         memset(pair, 0, sizeof(HASH));
 
-        pair->val = (char*)malloc(sizeof(char) * 256);
+        pair->key = (char*)malloc(sizeof(char) * 256);
 
-        if(!pair->val)
+        if(!pair->key)
         {
             __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
         }
 
-        memset(pair->val, 0, sizeof(char));
+        memset(pair->key, 0, sizeof(char));
 
-        fscanf(inFile, "%d%s", &pair->key, pair->val);
+        fscanf(inFile, "%s", pair->key);
         insertToHashTable(pair, hashTable);
     }
 
@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 
         while(tmp)
         {
-            fprintf(outFile, "%d %d %s\n", hashFunc(tmp->key), tmp->key, tmp->val);
+            fprintf(outFile, "%d %d %s\n", hashFunc(tmp->key), tmp->val, tmp->key);
 
             tmp = tmp->next;
         }
@@ -85,27 +85,52 @@ void __exit(int error, char* fileName)
 
 void insertToHashTable(HASH* pair, HASH** hashTable)
 {
-    int index = hashFunc(pair->key);
+    unsigned int index = hashFunc(pair->key);
     HASH* tmp = NULL;
 
     if(!hashTable[index])
     {
         hashTable[index] = pair;
+        hashTable[index]->val = 1;
 
         return;
     }
 
     tmp = hashTable[index];
 
+    if(!strcmp(tmp->key, pair->key))
+    {
+        tmp->val += 1;
+
+        return;
+    }
+
     while(tmp->next)
     {
         tmp = tmp->next;
+
+        if(!strcmp(tmp->key, pair->key))
+        {
+            tmp->val += 1;
+
+            return;
+        }
     }
 
     tmp->next = pair;
+    tmp->next->val = 1;
+
+    return;
 }
 
-int hashFunc(int key)
+int hashFunc(char* key)
 {
-    return (key % MAX_HASH_SIZE);
+    unsigned int index = 0;
+    int i = 0;
+    for (i = 0; key[i]; i++)
+    {
+        index += index * 255 + key[i];
+    }
+
+    return index % MAX_HASH_SIZE;
 }

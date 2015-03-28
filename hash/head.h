@@ -7,17 +7,17 @@
 
 #define INCORRECT_FILE 1
 #define MEMORY_IS_NOT_ALLOCATED 2
-#define MAX_HASH_SIZE 3
+#define MAX_HASH_SIZE 30011
 
 typedef struct __hash
 {
-    int key;
-    char* val;
+    int val;
+    char* key;
     struct __hash* next;
 }HASH;
 
 void __exit(int, char*);
 void insertToHashTable(HASH*, HASH**);
-int hashFunc(int);
+int hashFunc(char*);
 
 #endif /* HEAD_H_INCLUDED*/
