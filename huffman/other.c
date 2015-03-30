@@ -1,97 +1,39 @@
 #include "head.h"
 
-void sortList(SYMBOL* head)
+void __exit(int errorCode, char* errorParameter)
 {
-    SYMBOL* temp = NULL;
-    SYMBOL* tmp = NULL;
-    int tempNum = 0;
-    char tempCh = 0;
-
-    for(temp = head; temp; temp = temp->next)
+    switch(errorCode)
     {
-        for(tmp = head; tmp; tmp = tmp->next)
-        {
-            if(temp->freq < tmp->freq)
-            {
-                tempNum = temp->freq;
-                tempCh = temp->symbol;
-                temp->freq = tmp->freq;
-                temp->symbol = tmp->symbol;
-                tmp->freq = tempNum;
-                tmp->symbol = tempCh;
-            }
-        }
-    }
+    case TOO_FEW_PARAMETERS:
+        puts("ERROR : Too few parameters\nUse \"-?\" for help");
+        exit(TOO_FEW_PARAMETERS);
 
-    return;
+    case UNKNOWN_PARAMETER:
+        printf("ERROR : Unknown parameter %s\nUse \"-?\" for help", errorParameter);
+        exit(UNKNOWN_PARAMETER);
+
+    case TOO_MANY_PARAMETERS:
+        puts("ERROR : Too many parameters\nUse \"-?\" for help");
+        exit(TOO_MANY_PARAMETERS);
+
+    case INVALID_FILE:
+        printf("ERROR : %s invalid file", errorParameter);
+        exit(INVALID_FILE);
+    }
 }
 
-void writeSymbolFreq(SYMBOL* sym, FILE* file)
+void help()
 {
-    if(sym)
-    {
-        fprintf(file, "%c%d", sym->symbol, sym->freq);
-
-        writeSymbolFreq(sym->next, file);
-    }
-
-    return;
+    puts("Help will be here");
+    exit(0);
 }
 
-QUEUE* dequeue(QUEUE** head)
+char* createFileName(char* image)
 {
-    QUEUE* tmp = *head;
+    char* name = (char*)calloc(MAX_FILE_NAME_LENGHT, sizeof(char));
 
-    *head = (*head)->next;
+    name = strcpy(name, "huff.");
+    name = strcat(name, image);
 
-    return tmp;
-}
-
-void enqueue(QUEUE* sym, QUEUE* queue)
-{
-    while(getFreq(queue) <= getFreq(sym))
-    {
-        queue = queue->next;
-    }
-
-    sym->next = queue->next;
-    queue->next = sym;
-
-    return;
-}
-
-unsigned int getFreq(QUEUE* que)
-{
-    return que->node->symbol->freq;
-}
-
-QUEUE* createQueue(SYMBOL* sym)
-{
-    SYMBOL* tmpSym = sym;
-    QUEUE* que = NULL;
-    QUEUE* head = NULL;
-    TREE* tmpNode = NULL;
-
-    if(!head)
-    {
-        que = (QUEUE*)malloc(sizeof(QUEUE));
-
-        memset(que, 0, sizeof(QUEUE));
-
-        tmpNode = (TREE*)malloc(sizeof(TREE));
-
-        memset(tmpNode, 0, sizeof(TREE));
-
-        tmpNode->symbol = tmpSym;
-        que->node = tmpNode;
-        tmpSym = tmpSym->next;
-        head = que;
-    }
-
-    if(sym->next)
-    {
-        head->next = createQueue(sym->next);
-    }
-
-    return head;
+    return name;
 }
