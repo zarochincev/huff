@@ -6,12 +6,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
+#include <conio.h>
 
+#define SUCCESS 0
 #define ONLY_PROGRAMM_NAME 1
 #define TOO_FEW_PARAMETERS 1
 #define UNKNOWN_PARAMETER 2
 #define TOO_MANY_PARAMETERS 3
 #define INVALID_FILE 4
+#define MEMORY_IS_NOT_ALLOCATED 5
 #define ONE_PARAMETER 2
 #define TWO_PARAMETERS 3
 #define TREE_PARAMETERS 4
@@ -20,6 +24,7 @@
 #define ARCHIVE 'a'
 #define EXTRACT 'e'
 #define MAX_FILE_NAME_LENGHT 256
+#define MAX_NUM_OF_CHARACTERS ((UCHAR_MAX) + (1))
 
 typedef struct __symbol
 {
@@ -29,8 +34,9 @@ typedef struct __symbol
 
 void __exit(int, char*);
 void help();
-void pack(FILE*, FILE*);
+int pack(FILE*, FILE*);
 void extract(FILE*, FILE*);
 char* createFileName(char*);
+int countFileLenght(FILE*);
 
 #endif /*HEAD_H_INCLUDED*/

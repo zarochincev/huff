@@ -19,6 +19,10 @@ void __exit(int errorCode, char* errorParameter)
     case INVALID_FILE:
         printf("ERROR : %s invalid file", errorParameter);
         exit(INVALID_FILE);
+
+    case MEMORY_IS_NOT_ALLOCATED:
+        puts("ERROR : Not enough memory");
+        exit(MEMORY_IS_NOT_ALLOCATED);
     }
 }
 
@@ -36,4 +40,15 @@ char* createFileName(char* image)
     name = strcat(name, image);
 
     return name;
+}
+
+int countFileLenght(FILE* file)
+{
+    int lenght = 0;
+
+    fseek(file, 0, SEEK_END);
+    lenght = ftell(file);
+    rewind(file);
+
+    return lenght;
 }
