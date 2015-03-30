@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
                     __exit(INVALID_FILE, outFileName);
                 }
 
-                extract(inputFile, outputFile);
+                extract();
 
                 fclose(inputFile);
                 fclose(outputFile);
@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
                     __exit(INVALID_FILE, argv[3]);
                 }
 
-                extract(inputFile, outputFile);
+                extract();
 
                 fclose(inputFile);
                 fclose(outputFile);

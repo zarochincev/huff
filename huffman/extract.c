@@ -1,6 +1,6 @@
 #include "head.h"
 
-void extract(FILE* inputFile, FILE* outputFile)
+void extract()
 {
     puts("extracting process will be here");
     exit(0);

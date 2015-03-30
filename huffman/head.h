@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include <conio.h>
 
 #define SUCCESS 0
 #define ONLY_PROGRAMM_NAME 1
@@ -32,13 +31,27 @@ typedef struct __symbol
     int frequency;
 }SYMBOL;
 
+typedef struct __tree
+{
+    SYMBOL* symbol;
+    struct __tree* left;
+    struct __tree* right;
+}TREE;
+
+typedef struct __queue
+{
+    TREE* node;
+    struct __queue* next;
+}QUEUE;
+
 void __exit(int, char*);
 void help();
 int pack(FILE*, FILE*);
-void extract(FILE*, FILE*);
+void extract();
 char* createFileName(char*);
 int countFileLenght(FILE*);
 int countSymbolsFrequency(FILE*, SYMBOL**);
-void printSymbolsFrequency(FILE*, SYMBOL**);
+void printSymbolsFrequency(FILE*, QUEUE*);
+QUEUE* createSymbolsList(SYMBOL**);
 
 #endif /*HEAD_H_INCLUDED*/
