@@ -4,6 +4,10 @@ void __exit(int errorCode, char* errorParameter)
 {
     switch(errorCode)
     {
+    case SUCCESS:
+        puts("Successfully");
+        exit(SUCCESS);
+
     case TOO_FEW_PARAMETERS:
         puts("ERROR : Too few parameters\nUse \"-?\" for help");
         exit(TOO_FEW_PARAMETERS);

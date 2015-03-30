@@ -2,45 +2,66 @@
 
 int pack(FILE* inputFile, FILE* outputFile)
 {
-    SYMBOL** symbolsList = (SYMBOL**)calloc(MAX_NUM_OF_CHARACTERS, sizeof(SYMBOL));
-    unsigned char chr = 0;
-    int i = 0;
-    int inputFileLenght = countFileLenght(inputFile);
+    SYMBOL** symbolsTable = (SYMBOL**)calloc(MAX_NUM_OF_CHARACTERS, sizeof(SYMBOL));
+    int error = 0;
 
-    if(!symbolsList)
+    if(!symbolsTable)
     {
         return MEMORY_IS_NOT_ALLOCATED;
     }
 
-    for(i = 0; i < inputFileLenght; i++)
+    error = countSymbolsFrequency(inputFile, symbolsTable);
+
+    if(error)
     {
-        chr = fgetc(inputFile);
+        return MEMORY_IS_NOT_ALLOCATED;
+    }
 
-        if(!symbolsList[chr])
+    printSymbolsFrequency(outputFile, symbolsTable);
+
+    return SUCCESS;
+}
+
+int countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
+{
+    unsigned char chr = 0;
+    int fileLenght = countFileLenght(file);
+    int i = 0;
+
+    for(i = 0; i < fileLenght; i++)
+    {
+        chr = fgetc(file);
+
+        if(!symbolsTable[chr])
         {
-            symbolsList[chr] = (SYMBOL*)malloc(sizeof(SYMBOL));
+            symbolsTable[chr] = (SYMBOL*)malloc(sizeof(SYMBOL));
 
-            if(!symbolsList[chr])
+            if(!symbolsTable[chr])
             {
                 return MEMORY_IS_NOT_ALLOCATED;
             }
 
-            symbolsList[chr]->symbol = chr;
-            symbolsList[chr]->frequency = 1;
+            symbolsTable[chr]->symbol = chr;
+            symbolsTable[chr]->frequency = 1;
 
             continue;
         }
 
-        symbolsList[chr]->frequency += 1;
-    }
-
-    for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++)
-    {
-        if(symbolsList[i])
-        {
-            fprintf(outputFile, "%c %d\n", symbolsList[i]->symbol, symbolsList[i]->frequency);
-        }
+        symbolsTable[chr]->frequency += 1;
     }
 
     return SUCCESS;
+}
+
+void printSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
+{
+    int i = 0;
+
+    for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++)
+    {
+        if(symbolsTable[i])
+        {
+            fprintf(file, "%c %d\n", symbolsTable[i]->symbol, symbolsTable[i]->frequency);
+        }
+    }
 }

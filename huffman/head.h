@@ -29,7 +29,7 @@
 typedef struct __symbol
 {
     unsigned char symbol;
-    unsigned int frequency;
+    int frequency;
 }SYMBOL;
 
 void __exit(int, char*);
@@ -38,5 +38,7 @@ int pack(FILE*, FILE*);
 void extract(FILE*, FILE*);
 char* createFileName(char*);
 int countFileLenght(FILE*);
+int countSymbolsFrequency(FILE*, SYMBOL**);
+void printSymbolsFrequency(FILE*, SYMBOL**);
 
 #endif /*HEAD_H_INCLUDED*/
