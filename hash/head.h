@@ -7,7 +7,7 @@
 
 #define INCORRECT_FILE 1
 #define MEMORY_IS_NOT_ALLOCATED 2
-#define MAX_HASH_SIZE 30011
+#define MAX_HASH_SIZE 120000
 
 typedef struct __hash
 {
@@ -19,5 +19,6 @@ typedef struct __hash
 void __exit(int, char*);
 void insertToHashTable(HASH*, HASH**);
 int hashFunc(char*);
+int findWord(HASH**, char*);
 
 #endif /* HEAD_H_INCLUDED*/

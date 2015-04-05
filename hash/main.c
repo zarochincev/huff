@@ -8,6 +8,7 @@ int main(int argc, char* argv[])
     HASH** hashTable = NULL;
     HASH* tmp = NULL;
     int i = 0;
+    char* requiredWord = NULL;
 
     inFile = fopen(argv[1], "r");
 
@@ -65,6 +66,10 @@ int main(int argc, char* argv[])
             tmp = tmp->next;
         }
     }
+
+    requiredWord = (char*)calloc(256, sizeof(char));
+    scanf("%s", requiredWord);
+    printf("%d ", findWord(hashTable, requiredWord));
 
     return 0;
 }
@@ -125,12 +130,42 @@ void insertToHashTable(HASH* pair, HASH** hashTable)
 
 int hashFunc(char* key)
 {
-    unsigned int index = 0;
+    unsigned long long index = 0;
     int i = 0;
     for (i = 0; key[i]; i++)
     {
         index += index * 255 + key[i];
     }
 
-    return index % MAX_HASH_SIZE;
+    return ((int)(index % MAX_HASH_SIZE));
+}
+
+int findWord(HASH** table, char*key)
+{
+    int index = hashFunc(key);
+    HASH* head = NULL;
+
+    if(!table[index])
+    {
+        return 0;
+    }
+
+    if(!strcmp(table[index]->key, key))
+    {
+        return table[index]->val;
+    }
+
+    head = table[index];
+
+    while(strcmp(head->key, key))
+    {
+        head = head->next;
+    }
+
+    if(!head)
+    {
+        return 0;
+    }
+
+    return head->val;
 }
