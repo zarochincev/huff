@@ -2,35 +2,19 @@
 
 int pack(FILE* inputFile, FILE* outputFile)
 {
-    SYMBOL** symbolsTable = (SYMBOL**)calloc(MAX_NUM_OF_CHARACTERS, sizeof(SYMBOL));
-    int error = 0;
+    SYMBOL** symbolsTable = (SYMBOL**)alloc(sizeof(SYMBOL), MAX_NUM_OF_CHARACTERS);
     QUEUE* symbolsList = NULL;
 
-    if(!symbolsTable)
-    {
-        return MEMORY_IS_NOT_ALLOCATED;
-    }
-
-    error = countSymbolsFrequency(inputFile, symbolsTable);
-
-    if(error)
-    {
-        return MEMORY_IS_NOT_ALLOCATED;
-    }
+    countSymbolsFrequency(inputFile, symbolsTable);
 
     symbolsList = createSymbolsList(symbolsTable);
-
-    if(!symbolsList)
-    {
-        return MEMORY_IS_NOT_ALLOCATED;
-    }
 
     printSymbolsFrequency(outputFile, symbolsList);
 
     return SUCCESS;
 }
 
-int countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
+void countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
 {
     unsigned char chr = 0;
     int fileLenght = countFileLenght(file);
@@ -42,12 +26,7 @@ int countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
 
         if(!symbolsTable[chr])
         {
-            symbolsTable[chr] = (SYMBOL*)malloc(sizeof(SYMBOL));
-
-            if(!symbolsTable[chr])
-            {
-                return MEMORY_IS_NOT_ALLOCATED;
-            }
+            symbolsTable[chr] = (SYMBOL*)alloc(sizeof(SYMBOL));
 
             symbolsTable[chr]->symbol = chr;
             symbolsTable[chr]->frequency = 1;
@@ -57,8 +36,6 @@ int countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
 
         symbolsTable[chr]->frequency += 1;
     }
-
-    return SUCCESS;
 }
 
 void printSymbolsFrequency(FILE* file, QUEUE* symbolsList)
@@ -92,50 +69,25 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
         {
             if(!head)
             {
-                head = (QUEUE*)malloc(queueSize);
+                head = (QUEUE*)alloc(queueSize);
 
-                if(!head)
-                {
-                    return NULL;
-                }
-
-                memset(head, 0, queueSize);
-
-                head->node = (TREE*)malloc(nodeSize);
-
-                if(!head->node)
-                {
-                    return NULL;
-                }
-
-                memset(head->node, 0, nodeSize);
+                head->node = (TREE*)alloc(nodeSize);
 
                 head->node->symbol = symbolsTable[i];
+
+                continue;
             }
 
             _queue = head;
+            prevTmp = head;
 
             while(_queue)
             {
                 if(symbolsTable[i]->frequency <= _queue->node->symbol->frequency)
                 {
-                    tmp = (QUEUE*)malloc(queueSize);
+                    tmp = (QUEUE*)alloc(queueSize);
 
-                    if(!tmp)
-                    {
-                        return NULL;
-                    }
-
-                    memset(tmp, 0, queueSize);
-
-                    tmp->node = (TREE*)malloc(nodeSize);
-
-                    if(!tmp->node)
-                    {
-                        return NULL;
-                    }
-
-                    memset(tmp->node, 0, nodeSize);
+                    tmp->node = (TREE*)alloc(nodeSize);
 
                     tmp->node->symbol = symbolsTable[i];
                     tmp->next = _queue;
@@ -147,9 +99,9 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                 }
 
                 _queue = _queue->next;
-            }
-        }
-    }
+            }/**< while(_queue) */
+        }/**< if(symbolsTable[i]) */
+    }/**< for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++) */
 
     return head;
 }

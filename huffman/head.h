@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdarg.h>
 
 #define SUCCESS 0
 #define ONLY_PROGRAMM_NAME 1
@@ -50,8 +51,9 @@ int pack(FILE*, FILE*);
 void extract();
 char* createFileName(char*);
 int countFileLenght(FILE*);
-int countSymbolsFrequency(FILE*, SYMBOL**);
+void countSymbolsFrequency(FILE*, SYMBOL**);
 void printSymbolsFrequency(FILE*, QUEUE*);
 QUEUE* createSymbolsList(SYMBOL**);
+void* alloc(size_t, ...);
 
 #endif /*HEAD_H_INCLUDED*/

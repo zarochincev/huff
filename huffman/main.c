@@ -5,7 +5,6 @@ int main(int argc, char* argv[])
     FILE* inputFile = NULL;
     FILE* outputFile = NULL;
     char* outFileName = NULL;
-    int errorCode = 0;
 
     switch(argc)
     {
@@ -61,7 +60,7 @@ int main(int argc, char* argv[])
                     __exit(INVALID_FILE, outFileName);
                 }
 
-                errorCode = pack(inputFile, outputFile);
+                pack(inputFile, outputFile);
 
                 fclose(inputFile);
                 fclose(outputFile);
@@ -133,7 +132,7 @@ int main(int argc, char* argv[])
                     __exit(INVALID_FILE, argv[3]);
                 }
 
-                errorCode = pack(inputFile, outputFile);
+                pack(inputFile, outputFile);
 
                 fclose(inputFile);
                 fclose(outputFile);
@@ -182,7 +181,7 @@ int main(int argc, char* argv[])
         __exit(TOO_MANY_PARAMETERS, NULL);
     }/**< switch argc */
 
-    __exit(errorCode, NULL);
+    __exit(SUCCESS, NULL);
 
     return 0;
 }

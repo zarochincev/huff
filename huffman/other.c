@@ -56,3 +56,31 @@ int countFileLenght(FILE* file)
 
     return lenght;
 }
+
+void* alloc(size_t size, ...)
+{
+    void* tmp = NULL;
+    int count = 0;
+    va_list argList = NULL;
+
+    va_start(argList, size);
+
+    count = va_arg(argList, size_t);
+
+    if(count > 0)
+    {
+        tmp = calloc(count, size);
+    }else
+    {
+        tmp = malloc(size);
+        memset(tmp, 0, size);
+    }
+
+    if(!tmp)
+    {
+        __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
+    }
+
+    va_end(argList);
+    return tmp;
+}
