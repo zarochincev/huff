@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
     switch(argc)
     {
     case ONLY_PROGRAMM_NAME:
-        __exit(TOO_FEW_PARAMETERS, NULL);
+        __exit(TOO_FEW_PARAMETERS);
 
     case ONE_PARAMETER:
         if(argv[1][0] == PARAMETER)
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
                 help();
             }else
             {
-                __exit(TOO_FEW_PARAMETERS, NULL);
+                __exit(TOO_FEW_PARAMETERS);
             }
         }else /**< argv[1][0] != PARAMETER */
         {
@@ -178,10 +178,10 @@ int main(int argc, char* argv[])
         break;
 
     default:
-        __exit(TOO_MANY_PARAMETERS, NULL);
+        __exit(TOO_MANY_PARAMETERS);
     }/**< switch argc */
 
-    __exit(SUCCESS, NULL);
+    __exit(SUCCESS);
 
     return 0;
 }

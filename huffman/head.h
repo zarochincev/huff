@@ -1,7 +1,7 @@
 #ifndef HEAD_H_INCLUDED
 #define HEAD_H_INCLUDED
 
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS /**< kill visual studio secure warnings */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,20 +9,6 @@
 #include <limits.h>
 #include <stdarg.h>
 
-#define SUCCESS 0
-#define ONLY_PROGRAMM_NAME 1
-#define TOO_FEW_PARAMETERS 1
-#define UNKNOWN_PARAMETER 2
-#define TOO_MANY_PARAMETERS 3
-#define INVALID_FILE 4
-#define MEMORY_IS_NOT_ALLOCATED 5
-#define ONE_PARAMETER 2
-#define TWO_PARAMETERS 3
-#define TREE_PARAMETERS 4
-#define PARAMETER '-'
-#define HELP '?'
-#define ARCHIVE 'a'
-#define EXTRACT 'e'
 #define MAX_FILE_NAME_LENGHT 256
 #define MAX_NUM_OF_CHARACTERS ((UCHAR_MAX) + (1))
 
@@ -45,7 +31,33 @@ typedef struct __queue
     struct __queue* next;
 }QUEUE;
 
-void __exit(int, char*);
+enum ERRORS
+{
+    SUCCESS = 0,
+    ONLY_PROGRAMM_NAME = 1,
+    TOO_FEW_PARAMETERS = 1,
+    UNKNOWN_PARAMETER = 2,
+    TOO_MANY_PARAMETERS = 3,
+    INVALID_FILE = 4,
+    MEMORY_IS_NOT_ALLOCATED = 5
+};
+
+enum PARAMETERS
+{
+    PARAMETER = '-',
+    HELP = '?',
+    ARCHIVE = 'a',
+    EXTRACT = 'e'
+};
+
+enum NUM_OF_PARAMETERS
+{
+    ONE_PARAMETER = 2,
+    TWO_PARAMETERS = 3,
+    TREE_PARAMETERS = 4
+};
+
+void __exit(int, ...);
 void help();
 int pack(FILE*, FILE*);
 void extract();

@@ -27,7 +27,6 @@ void countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
         if(!symbolsTable[chr])
         {
             symbolsTable[chr] = (SYMBOL*)alloc(sizeof(SYMBOL));
-
             symbolsTable[chr]->symbol = chr;
             symbolsTable[chr]->frequency = 1;
 
@@ -70,9 +69,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
             if(!head)
             {
                 head = (QUEUE*)alloc(queueSize);
-
                 head->node = (TREE*)alloc(nodeSize);
-
                 head->node->symbol = symbolsTable[i];
 
                 continue;
@@ -86,9 +83,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                 if(symbolsTable[i]->frequency <= _queue->node->symbol->frequency)
                 {
                     tmp = (QUEUE*)alloc(queueSize);
-
                     tmp->node = (TREE*)alloc(nodeSize);
-
                     tmp->node->symbol = symbolsTable[i];
                     tmp->next = _queue;
 

@@ -1,33 +1,41 @@
 #include "head.h"
 
-void __exit(int errorCode, char* errorParameter)
+void __exit(int errorCode, ...)
 {
+    va_list argList = NULL;
+
+    va_start(argList, errorCode);
+
     switch(errorCode)
     {
     case SUCCESS:
         puts("Successfully");
-        exit(SUCCESS);
+        break;
 
     case TOO_FEW_PARAMETERS:
         puts("ERROR : Too few parameters\nUse \"-?\" for help");
-        exit(TOO_FEW_PARAMETERS);
+        break;
 
     case UNKNOWN_PARAMETER:
-        printf("ERROR : Unknown parameter %s\nUse \"-?\" for help", errorParameter);
-        exit(UNKNOWN_PARAMETER);
+        printf("ERROR : Unknown parameter %s\nUse \"-?\" for help", va_arg(argList, char*));
+        break;
 
     case TOO_MANY_PARAMETERS:
         puts("ERROR : Too many parameters\nUse \"-?\" for help");
-        exit(TOO_MANY_PARAMETERS);
+        break;
 
     case INVALID_FILE:
-        printf("ERROR : %s invalid file", errorParameter);
-        exit(INVALID_FILE);
+        printf("ERROR : %s invalid file", va_arg(argList, char*));
+        break;
 
     case MEMORY_IS_NOT_ALLOCATED:
         puts("ERROR : Not enough memory");
-        exit(MEMORY_IS_NOT_ALLOCATED);
+        break;
     }
+
+    va_end(argList);
+
+    exit(errorCode);
 }
 
 void help()
@@ -70,17 +78,24 @@ void* alloc(size_t size, ...)
     if(count > 0)
     {
         tmp = calloc(count, size);
+
+        if(!tmp)
+        {
+            __exit(MEMORY_IS_NOT_ALLOCATED);
+        }
     }else
     {
         tmp = malloc(size);
+
+        if(!tmp)
+        {
+            __exit(MEMORY_IS_NOT_ALLOCATED);
+        }
+
         memset(tmp, 0, size);
     }
 
-    if(!tmp)
-    {
-        __exit(MEMORY_IS_NOT_ALLOCATED, NULL);
-    }
-
     va_end(argList);
+
     return tmp;
 }
