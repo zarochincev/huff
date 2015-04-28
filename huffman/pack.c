@@ -50,6 +50,7 @@ void printSymbolsFrequency(FILE* file, QUEUE* symbolsList)
 QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 {
     int i = 0;
+    int flag = 0;
     QUEUE* _queue = NULL;
     QUEUE* head = NULL;
     QUEUE* tmp = NULL;
@@ -64,6 +65,8 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
     for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++)
     {
+        flag = 0;
+
         if(symbolsTable[i])
         {
             if(!head)
@@ -78,7 +81,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
             _queue = head;
             prevTmp = head;
 
-            while(_queue)
+            while(_queue->next)
             {
                 if(symbolsTable[i]->frequency <= _queue->node->symbol->frequency)
                 {
@@ -91,10 +94,25 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                     {
                         head = tmp;
                     }
+
+                    flag = 1;
+
+                    break;
                 }
 
                 _queue = _queue->next;
             }/**< while(_queue) */
+
+            if(flag)
+            {
+                continue;
+            }
+
+            tmp = (QUEUE*)alloc(queueSize);
+            tmp->node = (TREE*)alloc(nodeSize);
+            tmp->node->symbol = symbolsTable[i];
+            _queue->next = tmp;
+
         }/**< if(symbolsTable[i]) */
     }/**< for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++) */
 
