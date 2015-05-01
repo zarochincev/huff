@@ -120,7 +120,7 @@ void enqueue(TREE* node, QUEUE** head)
 
     while(_queue)
     {
-        if(node->symbol->frequency <= _queue->node->symbol->frequency)
+        if(treeNodeFreq(node) <= queueMemberFreq(_queue))
         {
             if(_queue == *head)
             {
@@ -154,4 +154,36 @@ void enqueue(TREE* node, QUEUE** head)
         prevQueue = _queue;
         _queue = _queue->next;
     }/**< while(_queue) */
+
+    return;
+}
+
+QUEUE* createQueueMember(SYMBOL* symbol)
+{
+    QUEUE* tmp = (QUEUE*)alloc(sizeof(QUEUE), 1);
+
+    tmp->node = (TREE*)alloc(sizeof(TREE), 1);
+    tmp->node->symbol = symbol;
+
+    return tmp;
+}
+
+int queueMemberFreq(QUEUE* member)
+{
+    return member->node->symbol->frequency;
+}
+
+int treeNodeFreq(TREE* node)
+{
+    return node->symbol->frequency;
+}
+
+unsigned char queueMemberSymbol(QUEUE* member)
+{
+    return member->node->symbol->symbol;
+}
+
+unsigned char treeNodeSymbol(TREE* node)
+{
+    return node->symbol->symbol;
 }

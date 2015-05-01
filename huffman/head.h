@@ -59,17 +59,27 @@ enum NUM_OF_PARAMETERS
 
 void __exit(int, ...);
 void help();
+char* createFileName(char*);
+void* alloc(size_t, size_t);
+QUEUE* createQueueMember(SYMBOL*);
+
+int queueMemberFreq(QUEUE*);
+unsigned char queueMemberSymbol(QUEUE*);
+int treeNodeFreq(TREE*);
+unsigned char treeNodeSymbol(TREE*);
+
 int pack(FILE*, FILE*);
 void extract();
-char* createFileName(char*);
+
 int countFileLenght(FILE*);
 void countSymbolsFrequency(FILE*, SYMBOL**);
-void printSymbolsFrequency(FILE*, QUEUE*);
-QUEUE* createSymbolsList(SYMBOL**);
-void* alloc(size_t, size_t);
+
 TREE* createTree(QUEUE*);
+QUEUE* createSymbolsList(SYMBOL**);
 void enqueue(TREE*, QUEUE**);
 QUEUE* dequeue(QUEUE**);
+
+void printSymbolsFrequency(FILE*, QUEUE*);
 void printTree(FILE*, TREE*);
 
 #endif /*HEAD_H_INCLUDED*/
