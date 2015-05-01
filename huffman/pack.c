@@ -26,7 +26,7 @@ void countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
 
         if(!symbolsTable[chr])
         {
-            symbolsTable[chr] = (SYMBOL*)alloc(sizeof(SYMBOL));
+            symbolsTable[chr] = (SYMBOL*)alloc(sizeof(SYMBOL), 1);
             symbolsTable[chr]->symbol = chr;
             symbolsTable[chr]->frequency = 1;
 
@@ -50,11 +50,10 @@ void printSymbolsFrequency(FILE* file, QUEUE* symbolsList)
 QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 {
     int i = 0;
-    int flag = 0;
     QUEUE* _queue = NULL;
     QUEUE* head = NULL;
     QUEUE* tmp = NULL;
-    QUEUE* prevTmp = NULL;
+    QUEUE* prevQueue = NULL;
     size_t nodeSize = sizeof(TREE);
     size_t queueSize = sizeof(QUEUE);
 
@@ -65,54 +64,61 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
     for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++)
     {
-        flag = 0;
-
         if(symbolsTable[i])
         {
             if(!head)
             {
-                head = (QUEUE*)alloc(queueSize);
-                head->node = (TREE*)alloc(nodeSize);
+                head = (QUEUE*)alloc(queueSize, 1);
+                head->node = (TREE*)alloc(nodeSize, 1);
                 head->node->symbol = symbolsTable[i];
 
                 continue;
             }
 
             _queue = head;
-            prevTmp = head;
 
-            while(_queue->next)
+            while(_queue)
             {
                 if(symbolsTable[i]->frequency <= _queue->node->symbol->frequency)
                 {
-                    tmp = (QUEUE*)alloc(queueSize);
-                    tmp->node = (TREE*)alloc(nodeSize);
-                    tmp->node->symbol = symbolsTable[i];
-                    tmp->next = _queue;
-
                     if(_queue == head)
                     {
+                        tmp = (QUEUE*)alloc(queueSize, 1);
+                        tmp->node = (TREE*)alloc(nodeSize, 1);
+                        tmp->node->symbol = symbolsTable[i];
+                        tmp->next = head;
                         head = tmp;
+                        _queue = head;
+
+                        break;
+                    }else
+                    {
+                        tmp = (QUEUE*)alloc(queueSize, 1);
+                        tmp->node = (TREE*)alloc(nodeSize, 1);
+                        tmp->node->symbol = symbolsTable[i];
+                        prevQueue->next = tmp;
+                        tmp->next = _queue;
+                        _queue = head;
+
+                        break;
                     }
+                }else/**< if(symbolsTable[i]) */
+                {
+                    if(!_queue->next)
+                    {
+                        tmp = (QUEUE*)alloc(queueSize, 1);
+                        tmp->node = (TREE*)alloc(nodeSize, 1);
+                        tmp->node->symbol = symbolsTable[i];
+                        _queue->next = tmp;
+                        _queue = head;
 
-                    flag = 1;
-
-                    break;
+                        break;
+                    }
                 }
 
+                prevQueue = _queue;
                 _queue = _queue->next;
             }/**< while(_queue) */
-
-            if(flag)
-            {
-                continue;
-            }
-
-            tmp = (QUEUE*)alloc(queueSize);
-            tmp->node = (TREE*)alloc(nodeSize);
-            tmp->node->symbol = symbolsTable[i];
-            _queue->next = tmp;
-
         }/**< if(symbolsTable[i]) */
     }/**< for(i = 0; i < MAX_NUM_OF_CHARACTERS; i++) */
 

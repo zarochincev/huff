@@ -65,19 +65,13 @@ int countFileLenght(FILE* file)
     return lenght;
 }
 
-void* alloc(size_t size, ...)
+void* alloc(size_t size, size_t num)
 {
     void* tmp = NULL;
-    int count = 0;
-    va_list argList = NULL;
 
-    va_start(argList, size);
-
-    count = va_arg(argList, size_t);
-
-    if(count > 0)
+    if(num != 1)
     {
-        tmp = calloc(count, size);
+        tmp = calloc(num, size);
 
         if(!tmp)
         {
@@ -94,8 +88,6 @@ void* alloc(size_t size, ...)
 
         memset(tmp, 0, size);
     }
-
-    va_end(argList);
 
     return tmp;
 }

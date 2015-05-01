@@ -66,6 +66,6 @@ int countFileLenght(FILE*);
 void countSymbolsFrequency(FILE*, SYMBOL**);
 void printSymbolsFrequency(FILE*, QUEUE*);
 QUEUE* createSymbolsList(SYMBOL**);
-void* alloc(size_t, ...);
+void* alloc(size_t, size_t);
 
 #endif /*HEAD_H_INCLUDED*/
