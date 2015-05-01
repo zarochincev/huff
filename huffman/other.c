@@ -112,7 +112,11 @@ void enqueue(TREE* node, QUEUE** head)
     {
         tmp->node = node;
         (*head) = tmp;
+
+        return;
     }
+
+    _queue = (*head);
 
     while(_queue)
     {

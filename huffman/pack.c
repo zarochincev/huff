@@ -86,7 +86,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
             while(_queue)
             {
-                if(symbolsTable[i]->frequency <= _queue->node->symbol->frequency)
+                if(symbolsTable[i]->frequency < _queue->node->symbol->frequency)
                 {
                     if(_queue == head)
                     {
@@ -98,7 +98,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                         _queue = head;
 
                         break;
-                    }else
+                    }else/**< if(_queue == head) */
                     {
                         tmp = (QUEUE*)alloc(queueSize, 1);
                         tmp->node = (TREE*)alloc(nodeSize, 1);
@@ -109,7 +109,50 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
                         break;
                     }
-                }else/**< if(symbolsTable[i]) */
+                }else if(symbolsTable[i]->frequency == _queue->node->symbol->frequency)/**< if(symbolsTable[i]->frequency < _queue->node->symbol->frequency) */
+                {
+                    if(symbolsTable[i]->symbol < _queue->node->symbol->symbol)
+                    {
+                        if(_queue == head)
+                        {
+                            tmp = (QUEUE*)alloc(queueSize, 1);
+                            tmp->node = (TREE*)alloc(nodeSize, 1);
+                            tmp->node->symbol = symbolsTable[i];
+                            tmp->next = head;
+                            head = tmp;
+                            _queue = head;
+
+                            break;
+                        }else/**< if(_queue == head) */
+                        {
+                            tmp = (QUEUE*)alloc(queueSize, 1);
+                            tmp->node = (TREE*)alloc(nodeSize, 1);
+                            tmp->node->symbol = symbolsTable[i];
+                            prevQueue->next = tmp;
+                            tmp->next = _queue;
+                            _queue = head;
+
+                            break;
+                        }
+                    }else/**< if(symbolsTable[i]->symbol < _queue->node->symbol->symbol) */
+                    {
+                        if(!_queue->next)
+                        {
+                            tmp = (QUEUE*)alloc(queueSize, 1);
+                            tmp->node = (TREE*)alloc(nodeSize, 1);
+                            tmp->node->symbol = symbolsTable[i];
+                            _queue->next = tmp;
+                            _queue = head;
+
+                            break;
+                        }else/**< if(!_queue->next) */
+                        {
+                            _queue = _queue->next;
+
+                            continue;
+                        }
+                    }
+                }else/**< if(symbolsTable[i]->frequency < _queue->node->symbol->frequency) */
                 {
                     if(!_queue->next)
                     {
@@ -144,7 +187,7 @@ TREE* createTree(QUEUE* head)
     size_t sizeOfSymbol = sizeof(SYMBOL);
 
     while(head->next)
-    {printSymbolsFrequency(stdout, head);
+    {
         firstChildQueue = dequeue(&head);
         secondChildQueue = dequeue(&head);
         firstChild = firstChildQueue->node;
@@ -158,7 +201,7 @@ TREE* createTree(QUEUE* head)
 
         enqueue(parent, &head);
     }
-printSymbolsFrequency(stdout, head);
+
     root = head->node;
 
     return root;
@@ -177,5 +220,4 @@ void printTree(FILE* file, TREE* root)
     {
         printTree(file, root->right);
     }
-
 }
