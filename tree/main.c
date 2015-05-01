@@ -7,15 +7,15 @@ int main()
     int i = 0;
     TREE* root = NULL;
 
-    fscanf(stdin, "%d", &num);
+    scanf("%d", &num);
 
     for(i = 0; i < num; i++)
     {
-        fscanf(stdin, "%d", &key);
+        scanf("%d", &key);
         insertToTree(&root, key);
     }
-    printHeight(root);
 
+    printHeight(root);
     deleteTree(&root);
 
     return 0;
@@ -26,7 +26,9 @@ void insertToTree(TREE** root, int val)
     if(!(*root))
     {
         (*root) = (TREE*)malloc(sizeof(TREE));
+
         memset((*root), 0, sizeof(TREE));
+
         (*root)->val = val;
         (*root)->height = 1;
 
@@ -74,10 +76,10 @@ void printHeight(TREE* root)
 {
     if(!root)
     {
-        fprintf(stdout, "%d", 0);
+        printf("%d", 0);
 
         return;
     }
 
-    fprintf(stdout, "%d", root->height);
+    printf("%d", root->height);
 }

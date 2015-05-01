@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
     FILE* outFile = NULL;
     HASH* pair = NULL;
     HASH** hashTable = NULL;
-    HASH* tmp = NULL;
+
     int i = 0;
     char* requiredWord = NULL;
 
@@ -55,21 +55,24 @@ int main(int argc, char* argv[])
         insertToHashTable(pair, hashTable);
     }
 
-    for(i = 0; i < MAX_HASH_SIZE; i++)
-    {
-        tmp = hashTable[i];
-
-        while(tmp)
-        {
-            fprintf(outFile, "%d %d %s\n", hashFunc(tmp->key), tmp->val, tmp->key);
-
-            tmp = tmp->next;
-        }
-    }
+    printHash(hashTable, outFile);
 
     requiredWord = (char*)calloc(256, sizeof(char));
     scanf("%s", requiredWord);
     printf("%d ", findWord(hashTable, requiredWord));
+
+    fclose(inFile);
+    fclose(outFile);
+    deleteWord(hashTable, requiredWord);
+
+    outFile = fopen(argv[3], "w");
+
+    if(!outFile)
+    {
+        __exit(INCORRECT_FILE, argv[3]);
+    }
+
+    printHash(hashTable, outFile);
 
     return 0;
 }
@@ -150,12 +153,13 @@ int findWord(HASH** table, char*key)
         return 0;
     }
 
-    if(!strcmp(table[index]->key, key))
+    head = table[index];
+
+    if(!strcmp(head->key, key))
     {
-        return table[index]->val;
+        return head->val;
     }
 
-    head = table[index];
 
     while(strcmp(head->key, key))
     {
@@ -168,4 +172,47 @@ int findWord(HASH** table, char*key)
     }
 
     return head->val;
+}
+
+void deleteWord(HASH** table, char* key)
+{
+    int index = hashFunc(key);
+    HASH* tmp;
+
+    if(!table[index])
+    {
+        return;
+    }
+
+    tmp = table[index];
+
+    if(!strcmp(table[index]->key, key))
+    {
+        if(tmp->next)
+        {
+            table[index] = tmp->next;
+
+            memset(tmp, 0, sizeof(HASH));
+        }
+
+        free(table[index]);
+    }
+}
+
+void printHash(HASH** table, FILE* file)
+{
+    int i = 0;
+    HASH* tmp = NULL;
+
+    for(i = 0; i < MAX_HASH_SIZE; i++)
+    {
+        tmp = table[i];
+
+        while(tmp)
+        {
+            fprintf(file, "%d %d %s\n", hashFunc(tmp->key), tmp->val, tmp->key);
+
+            tmp = tmp->next;
+        }
+    }
 }

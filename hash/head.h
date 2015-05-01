@@ -20,5 +20,7 @@ void __exit(int, char*);
 void insertToHashTable(HASH*, HASH**);
 int hashFunc(char*);
 int findWord(HASH**, char*);
+void printHash(HASH**, FILE*);
+void deleteWord(HASH**, char*);
 
 #endif /* HEAD_H_INCLUDED*/
