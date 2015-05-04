@@ -5,12 +5,10 @@ int pack(FILE* inputFile, FILE* outputFile)
     SYMBOL** symbolsTable = (SYMBOL**)alloc(sizeof(SYMBOL), MAX_NUM_OF_CHARACTERS);
     QUEUE* symbolsList = NULL;
     TREE* tree = NULL;
-    unsigned char byte = 0;
-    unsigned char buffer = 0;
-    int i = 0;
-    int codeLenghtCounter = 0;
 
     countSymbolsFrequency(inputFile, symbolsTable);
+
+    rewind(inputFile);
 
     symbolsList = createSymbolsList(symbolsTable);
 
@@ -27,35 +25,7 @@ int pack(FILE* inputFile, FILE* outputFile)
     printSymbolsCode(outputFile, tree);
     fprintf(outputFile, "\n");
 
-    rewind(inputFile);
-
-    while(!feof(inputFile))
-    {
-        fread(&byte, 1, 1, inputFile);
-
-        for(codeLenghtCounter = 0; codeLenghtCounter < strlen(symbolsTable[byte]->code); codeLenghtCounter++)
-        {
-            if(symbolsTable[byte]->code[codeLenghtCounter] == '1')
-            {
-                buffer |= 1;
-                buffer <<= 1;
-                i++;
-            }else if(symbolsTable[byte]->code[codeLenghtCounter] == '0')
-            {
-                buffer <<= 1;
-                i++;
-            }
-
-            if(i == 7)
-            {
-                fwrite(&buffer, 1, 1, outputFile);
-                buffer = 0;
-                i = 0;
-            }
-        }
-    }
-
-    fwrite(&buffer, 1, 1, outputFile);
+    encode(inputFile, outputFile, symbolsTable);
 
     return SUCCESS;
 }
@@ -253,4 +223,45 @@ void createSymbolsCode(TREE* root, char* code)
         code[i] = 0;
         i--;
     }
+}
+
+void encode(FILE* inputFile, FILE* outputFile, SYMBOL** symbolsTable)
+{
+    unsigned char byte = 0;
+    unsigned char buffer = 0;
+    int i = 0;
+    int codeLenghtCounter = 0;
+
+    while(!feof(inputFile))
+    {
+        fread(&byte, 1, 1, inputFile);
+
+        for(codeLenghtCounter = 0; codeLenghtCounter < (int)strlen(symbolsTable[byte]->code); codeLenghtCounter++)
+        {
+            switch(symbolsTable[byte]->code[codeLenghtCounter])
+            {
+            case '1':
+                buffer |= 1;
+                buffer <<= 1;
+                i++;
+
+                break;
+
+            case '0':
+                buffer <<= 1;
+                i++;
+
+                break;
+            }
+
+            if(FULL_BUFFER)
+            {
+                fwrite(&buffer, 1, 1, outputFile);
+                buffer = 0;
+                i = 0;
+            }
+        }
+    }
+
+    fwrite(&buffer, 1, 1, outputFile);/**< tail */
 }

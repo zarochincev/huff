@@ -11,6 +11,7 @@
 
 #define MAX_FILE_NAME_LENGHT 256
 #define MAX_NUM_OF_CHARACTERS ((UCHAR_MAX) + (1))
+#define FULL_BUFFER ((i) == (7))
 
 typedef struct __symbol
 {
@@ -70,6 +71,7 @@ int treeNodeFreq(TREE*);
 unsigned char treeNodeSymbol(TREE*);
 
 int pack(FILE*, FILE*);
+void encode (FILE*, FILE*, SYMBOL**);
 void extract();
 
 int countFileLenght(FILE*);
