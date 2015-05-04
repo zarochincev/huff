@@ -139,7 +139,7 @@ void enqueue(TREE* node, QUEUE** head)
 
                 break;
             }
-        }else
+        }else/**< if(treeNodeFreq(node) <= queueMemberFreq(_queue)) */
         {
             if(!_queue->next)
             {
@@ -149,7 +149,7 @@ void enqueue(TREE* node, QUEUE** head)
 
                 break;
             }
-        }
+        }/**< if(treeNodeFreq(node) <= queueMemberFreq(_queue)) */
 
         prevQueue = _queue;
         _queue = _queue->next;

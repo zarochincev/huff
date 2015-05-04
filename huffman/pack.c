@@ -5,6 +5,10 @@ int pack(FILE* inputFile, FILE* outputFile)
     SYMBOL** symbolsTable = (SYMBOL**)alloc(sizeof(SYMBOL), MAX_NUM_OF_CHARACTERS);
     QUEUE* symbolsList = NULL;
     TREE* tree = NULL;
+    unsigned char byte = 0;
+    unsigned char buffer = 0;
+    int i = 0;
+    int codeLenghtCounter = 0;
 
     countSymbolsFrequency(inputFile, symbolsTable);
 
@@ -21,6 +25,37 @@ int pack(FILE* inputFile, FILE* outputFile)
     createSymbolsCode(tree, NULL);
 
     printSymbolsCode(outputFile, tree);
+    fprintf(outputFile, "\n");
+
+    rewind(inputFile);
+
+    while(!feof(inputFile))
+    {
+        fread(&byte, 1, 1, inputFile);
+
+        for(codeLenghtCounter = 0; codeLenghtCounter < strlen(symbolsTable[byte]->code); codeLenghtCounter++)
+        {
+            if(symbolsTable[byte]->code[codeLenghtCounter] == '1')
+            {
+                buffer |= 1;
+                buffer <<= 1;
+                i++;
+            }else if(symbolsTable[byte]->code[codeLenghtCounter] == '0')
+            {
+                buffer <<= 1;
+                i++;
+            }
+
+            if(i == 7)
+            {
+                fwrite(&buffer, 1, 1, outputFile);
+                buffer = 0;
+                i = 0;
+            }
+        }
+    }
+
+    fwrite(&buffer, 1, 1, outputFile);
 
     return SUCCESS;
 }
