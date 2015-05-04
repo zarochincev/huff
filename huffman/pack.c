@@ -88,7 +88,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                         _queue = head;
 
                         break;
-                    }else/**< if(_queue == head) */
+                    }else
                     {
                         tmp = createQueueMember(symbolsTable[i]);
                         prevQueue->next = tmp;
@@ -97,7 +97,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
                         break;
                     }
-                }else if(symbolsTable[i]->frequency == queueMemberFreq(_queue))/**< if(symbolsTable[i]->frequency < _queue->node->symbol->frequency) */
+                }else if(symbolsTable[i]->frequency == queueMemberFreq(_queue))/**< if(symbolsTable[i]->frequency < queueMemberFreq(_queue)) */
                 {
                     if(symbolsTable[i]->symbol < queueMemberSymbol(_queue))
                     {
@@ -109,7 +109,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                             _queue = head;
 
                             break;
-                        }else/**< if(_queue == head) */
+                        }else
                         {
                             tmp = createQueueMember(symbolsTable[i]);
                             prevQueue->next = tmp;
@@ -118,7 +118,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
                             break;
                         }
-                    }else/**< if(symbolsTable[i]->symbol < _queue->node->symbol->symbol) */
+                    }else/**< if(symbolsTable[i]->symbol < queueMemberSymbol(_queue)) */
                     {
                         if(!_queue->next)
                         {
@@ -127,14 +127,14 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                             _queue = head;
 
                             break;
-                        }else/**< if(!_queue->next) */
+                        }else
                         {
                             _queue = _queue->next;
 
                             continue;
                         }
-                    }
-                }else/**< if(symbolsTable[i]->frequency < _queue->node->symbol->frequency) */
+                    }/**< if(symbolsTable[i]->symbol < queueMemberSymbol(_queue)) */
+                }else/**< if(symbolsTable[i]->frequency < queueMemberFreq(_queue))) */
                 {
                     if(!_queue->next)
                     {
@@ -144,7 +144,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
 
                         break;
                     }
-                }
+                }/**< if(symbolsTable[i]->frequency < queueMemberFreq(_queue)) */
 
                 prevQueue = _queue;
                 _queue = _queue->next;
