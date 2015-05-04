@@ -11,10 +11,16 @@ int pack(FILE* inputFile, FILE* outputFile)
     symbolsList = createSymbolsList(symbolsTable);
 
     printSymbolsFrequency(outputFile, symbolsList);
+    fprintf(outputFile, "\n");
 
     tree = createTree(symbolsList);
 
     printTree(outputFile, tree);
+    fprintf(outputFile, "\n");
+
+    createSymbolsCode(tree, NULL);
+
+    printSymbolsCode(outputFile, tree);
 
     return SUCCESS;
 }
@@ -40,20 +46,6 @@ void countSymbolsFrequency(FILE* file, SYMBOL** symbolsTable)
 
         symbolsTable[chr]->frequency += 1;
     }
-
-    return;
-}
-
-void printSymbolsFrequency(FILE* file, QUEUE* symbolsList)
-{
-    while(symbolsList)
-    {
-        fprintf(file, "%c%d ", queueMemberSymbol(symbolsList), queueMemberFreq(symbolsList));
-
-        symbolsList = symbolsList->next;
-    }
-
-    fprintf(file, "\n");
 
     return;
 }
@@ -195,19 +187,34 @@ TREE* createTree(QUEUE* head)
     return root;
 }
 
-void printTree(FILE* file, TREE* root)
+void createSymbolsCode(TREE* root, char* code)
 {
-    fprintf(file, "%c%d ", treeNodeSymbol(root), treeNodeFreq(root));
+    static int i = 0;
+
+    if(!code)
+    {
+        code = (char*)alloc(sizeof(char), MAX_NUM_OF_CHARACTERS);
+    }
 
     if(root->left)
     {
-        printTree(file, root->left);
+        code[i] = '0';
+        i++;
+        createSymbolsCode(root->left, code);
     }
 
     if(root->right)
     {
-        printTree(file, root->right);
+        code[i] = '1';
+        i++;
+        createSymbolsCode(root->right, code);
     }
 
-    return;
+    if(root->symbol->symbol)
+    {
+        root->symbol->code = (char*)alloc(sizeof(char), strlen(code));
+        strcpy(root->symbol->code, code);
+        code[i] = 0;
+        i--;
+    }
 }

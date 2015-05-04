@@ -187,3 +187,50 @@ unsigned char treeNodeSymbol(TREE* node)
 {
     return node->symbol->symbol;
 }
+
+void printSymbolsFrequency(FILE* file, QUEUE* symbolsList)
+{
+    while(symbolsList)
+    {
+        fprintf(file, "%c%d ", queueMemberSymbol(symbolsList), queueMemberFreq(symbolsList));
+
+        symbolsList = symbolsList->next;
+    }
+
+    return;
+}
+
+void printTree(FILE* file, TREE* root)
+{
+    fprintf(file, "%c%d ", treeNodeSymbol(root), treeNodeFreq(root));
+
+    if(root->left)
+    {
+        printTree(file, root->left);
+    }
+
+    if(root->right)
+    {
+        printTree(file, root->right);
+    }
+
+    return;
+}
+
+void printSymbolsCode(FILE* file, TREE* root)
+{
+    if(root->symbol->symbol)
+    {
+        fprintf(file, "%c %s\n", root->symbol->symbol, root->symbol->code);
+    }
+
+    if(root->left)
+    {
+        printSymbolsCode(file, root->left);
+    }
+
+    if(root->right)
+    {
+        printSymbolsCode(file, root->right);
+    }
+}

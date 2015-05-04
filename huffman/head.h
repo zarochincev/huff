@@ -16,6 +16,7 @@ typedef struct __symbol
 {
     unsigned char symbol;
     int frequency;
+    char* code;
 }SYMBOL;
 
 typedef struct __tree
@@ -79,7 +80,10 @@ QUEUE* createSymbolsList(SYMBOL**);
 void enqueue(TREE*, QUEUE**);
 QUEUE* dequeue(QUEUE**);
 
+void createSymbolsCode(TREE*, char*);
+
 void printSymbolsFrequency(FILE*, QUEUE*);
 void printTree(FILE*, TREE*);
+void printSymbolsCode(FILE*, TREE*);
 
 #endif /*HEAD_H_INCLUDED*/
