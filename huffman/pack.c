@@ -129,6 +129,7 @@ QUEUE* createSymbolsList(SYMBOL** symbolsTable)
                             break;
                         }else
                         {
+                            prevQueue = _queue;
                             _queue = _queue->next;
 
                             continue;
